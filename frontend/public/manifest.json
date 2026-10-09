@@ -1,0 +1,9 @@
+{
+  "short_name": "RuralFlow Checklist",
+  "name": "RuralFlow - Checklist de Analise de Credito Rural",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#6d6168",
+  "background_color": "#f7faf6"
+}

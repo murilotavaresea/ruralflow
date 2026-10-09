@@ -1,0 +1,79 @@
+.garantias-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.garantias-resumo {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--color-sage-50);
+  border: 1px solid var(--color-border-soft);
+  font-size: 12px;
+  color: var(--color-ink-700);
+  margin-bottom: 12px;
+}
+
+.garantias-resumo strong {
+  font-size: 14px;
+  color: var(--color-ink-900);
+}
+
+.garantias-adicionar {
+  display: flex;
+  gap: 8px;
+}
+
+.garantias-adicionar select {
+  flex: 1;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12.5px;
+  color: var(--color-ink-900);
+  background: #fff;
+}
+
+.garantias-adicionar button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #88c3b5, #6faf9d);
+  color: #f8faf6;
+  white-space: nowrap;
+}
+
+.garantias-abas {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.garantias-abas button {
+  border: 1px solid var(--color-border-soft);
+  background: #fff;
+  color: var(--color-ink-700);
+  border-radius: 10px;
+  padding: 7px 13px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.garantias-abas button:hover {
+  background: var(--color-sage-50);
+}
+
+.garantias-abas button.ativa {
+  background: var(--color-ink-900);
+  border-color: var(--color-ink-900);
+  color: #fff;
+}

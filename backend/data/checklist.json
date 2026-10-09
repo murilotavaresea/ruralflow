@@ -1,0 +1,1785 @@
+{
+  "proponente": [
+    {
+      "id": "grp_e3b1511ef1",
+      "nome": "Compliance geral",
+      "itens": [
+        {
+          "id": "itm_7cf68623b7",
+          "nome": "CNDU",
+          "tipo": "checklist",
+          "ajuda": "Verificar a autenticidade da certidao.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_2b3bf08785",
+          "nome": "CND embargo",
+          "tipo": "checklist",
+          "ajuda": "Se houver medidas efetivas informadas pelo cooperado, solicitar PRAD, TC, TAC e/ou documento que comprove a regularizacao (CCI 015-24).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_3a2e66be0f",
+          "nome": "Trabalho escravo",
+          "tipo": "checklist",
+          "ajuda": "Verificar na \"Lista Suja\" do Ministerio do Trabalho e Emprego.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_e39ff44b23",
+          "nome": "CND IBAMA",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_4994ca1fb8",
+          "nome": "CND regularidade FGTS",
+          "tipo": "checklist",
+          "ajuda": "Exigido para PJ.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_f834a5855b",
+          "nome": "CND trabalhista",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_e9dfda8876",
+          "nome": "QRSA",
+          "tipo": "checklist",
+          "ajuda": "Conferir na plataforma RSAC. Nivel ALTO exige submissao ao Nivel 4.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_2dc0080a15",
+          "nome": "Autorizacao SICOR",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_f8752bf078",
+          "nome": "Autorizacao consulta emitentes - CPRF",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        }
+      ]
+    },
+    {
+      "id": "grp_7b745db937",
+      "nome": "CAPES",
+      "itens": [
+        {
+          "id": "itm_9e3a79775e",
+          "nome": "DAP/CAF",
+          "tipo": "checklist",
+          "ajuda": "Verificar se DAP/CAF esta lancada no CAPES do Proponente (Parceiro de Negocio > Certidoes) e se a renda cadastrada e oriunda da CAF/DAP.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_ad3e4f49d0",
+          "nome": "PRONAF - saldo devedor em aberto",
+          "tipo": "checklist",
+          "ajuda": "MCR 10-1-34: somar o saldo devedor de todas as operacoes PRONAF vigentes do proponente; se saldo devedor + valor da operacao analisada ultrapassar R$ 450 mil, nao seguir com a operacao.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_dcfca99712",
+          "nome": "Anotacoes no CAPES",
+          "tipo": "checklist",
+          "ajuda": "Registrar cada anotacao encontrada com numero, descricao e explicacao.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_27ae604e43",
+          "nome": "Desclassificacao",
+          "tipo": "checklist",
+          "ajuda": "Se houver anotacao de desclassificacao, registrar: \"Proponente consta historico de irregularidades com desclassificacao/reclassificacao em operacoes de Credito Rural\".",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_0e4333e0e9",
+          "nome": "Codigo 115",
+          "tipo": "checklist",
+          "ajuda": "Condenacao em sentenca judicial transitada em julgado (crime ambiental, trabalho escravo, exploracao sexual, improbidade administrativa, corrupcao, lavagem de dinheiro, descumprimento de TAC).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_9ebbeaf410",
+          "nome": "Ambiental",
+          "tipo": "checklist",
+          "ajuda": "Analisar caso a caso (acao, embargo, auto de infracao etc.) e apontar no parecer.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_33b3331749",
+          "nome": "Crime",
+          "tipo": "checklist",
+          "ajuda": "Apresentar certidao de objeto e pe. Quando nao houver, solicitar parecer juridico do resumo do processo e anexar CNJ, antecedentes criminais e certidao TRF (civel e criminal).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_36c172bbca",
+          "nome": "Risco superior a R12",
+          "tipo": "checklist",
+          "ajuda": "Submeter ao Nivel 4 (Resolucao Nº28/2025).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_926afdf469",
+          "nome": "Operacoes enquadradas em estagio 3",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_f20e4e7671",
+          "nome": "Perda esperada > 6,5%",
+          "tipo": "checklist",
+          "ajuda": "Submeter ao Nivel 3 (Resolucao Nº28/2025). Informar o motivo em anotacoes mesmo quando todas sao submetidas ao Nivel 3.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_e2f7b23654",
+          "nome": "Partes relacionadas",
+          "tipo": "checklist",
+          "ajuda": "Submeter ao Nivel 4. Planilha disponivel na pasta 24/25.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_3534bc9112",
+          "nome": "Renda atualizada",
+          "tipo": "checklist",
+          "ajuda": "A renda e considerada atualizada por ate 2 anos a partir da data de lancamento, conforme manual de cadastro.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_4de959995d",
+          "nome": "Renda zerada",
+          "tipo": "checklist",
+          "ajuda": "E necessario comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_208f60b04c",
+          "nome": "BACEN",
+          "tipo": "checklist",
+          "ajuda": "A data em \"consulta realizada em\" deve ser no dia ou posterior a liberacao pela equipe de credito.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_79e5823f5f",
+          "nome": "SERASA",
+          "tipo": "checklist",
+          "ajuda": "Validade de 30 dias.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_1422ee05bb",
+          "nome": "CNAE",
+          "tipo": "checklist",
+          "ajuda": "Conferir se o CNAE no CAPES esta de acordo com a Inscricao Estadual do proponente e, em caso de BNDES, com a concessao.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        },
+        {
+          "id": "itm_dc84cd2480",
+          "nome": "Campo produtor",
+          "tipo": "checklist",
+          "ajuda": "Precisa estar informado o porte e somente a producao agricola cadastrada.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "fontes": "todas"
+        }
+      ]
+    }
+  ],
+  "garantias": {
+    "bem_hipoteca": [
+      {
+        "id": "grp_92ac887a4b",
+        "nome": "Documentação do imóvel",
+        "itens": [
+          {
+            "id": "itm_5972cc32fa",
+            "nome": "Inteiro teor",
+            "tipo": "checklist",
+            "ajuda": "Validade = 30 dias.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_9266f2dbba",
+            "nome": "Certidão de inexistência de ônus dos bens incorporados ao imóvel",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_52bfeacc7b",
+            "nome": "NIRF",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_52ae73fb4d",
+            "nome": "CCIR",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_c1646f5069",
+            "nome": "Laudo",
+            "tipo": "checklist",
+            "ajuda": "Hipoteca e alienação: 1 ano. Guarda-chuva: 5 anos.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_267c5810a8",
+            "nome": "Imóvel no CAPES em avançado",
+            "tipo": "checklist",
+            "ajuda": "Para BNDES e Fundos é obrigatório o preenchimento.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_9ed8b7e01f",
+            "nome": "Avaliação do imóvel no CAPES",
+            "tipo": "checklist",
+            "ajuda": "A aba de avaliação do imóvel deve estar preenchida de acordo com o laudo.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_5e5857d358",
+            "nome": "Recibo do CAR",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_4078f766d0",
+            "nome": "Consulta Agrotools",
+            "tipo": "checklist",
+            "ajuda": "Realizar a verificação de área e anexar documento no dossiê com print da situação ambiental. Se houver impedimentos ambientais, apontar ao comitê para deliberação.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_5692a3f66a",
+            "nome": "Soma das garantias reais > 30%",
+            "tipo": "checklist",
+            "ajuda": "Se não, referendar no CONSAD.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      },
+      {
+        "id": "grp_3ce89edb8e",
+        "nome": "Descrição legal",
+        "itens": [
+          {
+            "id": "itm_f25f36a87e",
+            "nome": "Modelo de descrição da hipoteca",
+            "tipo": "texto",
+            "ajuda": "Modelo extraído da aba HIPOTECA - ALIENAÇÃO IMÓVEL do Excel original.",
+            "template": "HIPOTECA CEDULAR DE {grau}º GRAU SOBRE O SEGUINTE BEM: DESCRIÇÃO IGUAL AO INÍCIO DA MATRÍCULA - NÃO INCLUINDO OS LIMITES E CONFRONTAÇÕES - MELHOR CARACTERIZADO E DESCRITO NA MATRÍCULA {matricula}, DATA {data}, LIVRO {livro}, CARTÓRIO {cartorio}, COMARCA DE {comarca}. A GARANTIA ABRANGE O IMÓVEL E TODAS AS ACESSÕES, BENFEITORIAS, MELHORAMENTOS, CONSTRUÇÕES E INSTALAÇÕES.",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "proprietario_hipoteca": [
+      {
+        "id": "grp_d0fb21d49a",
+        "nome": "Documentação do garantidor",
+        "itens": [
+          {
+            "id": "itm_6cbc98fc81",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_675480a3a7",
+            "nome": "Contrato social ou estatuto (quando PJ)",
+            "tipo": "checklist",
+            "ajuda": "Que comprove a permissão em ofertar bens em garantia.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_fcc287c5ec",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "Quando renda zerada, é necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_b0695fb10c",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_5dfe089054",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "bem_alienacao_imovel": [
+      {
+        "id": "grp_f5fd68dbf1",
+        "nome": "Documentação do imóvel",
+        "itens": [
+          {
+            "id": "itm_8696fd6ff2",
+            "nome": "Orçamento atualizado",
+            "tipo": "checklist",
+            "ajuda": "Verificar se possui assinatura do proponente e vendedor. Se não houver data de validade, o prazo é de 30 dias.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_b1fc95fa78",
+            "nome": "Soma das garantias reais > 30%",
+            "tipo": "checklist",
+            "ajuda": "Se não, referendar no CONSAD.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      },
+      {
+        "id": "grp_0651eb2448",
+        "nome": "Descrição legal",
+        "itens": [
+          {
+            "id": "itm_520a543729",
+            "nome": "Modelo de descrição da alienação de imóvel",
+            "tipo": "texto",
+            "ajuda": "Modelo extraído da aba ALIENAÇÃO do Excel original.",
+            "template": "O(S) EMITENTE(S) ENTREGA(M), NESTE ATO, EM ALIENAÇÃO FIDUCIÁRIA, O(S) BEM(NS) LIVRE(S) E DESEMBARAÇADO(S) DE QUAISQUER ÔNUS, INCLUSIVE DÉBITOS FISCAIS, A SEGUIR DESCRITO(S): IMÓVEL RURAL/URBANO DENOMINADO \"{nome_imovel}\", MEDINDO {area} HA, SITUADO NO MUNICÍPIO DE {municipio}-{uf}, COMARCA DE {comarca}, COM SEUS LIMITES E CONFRONTAÇÕES MELHOR CARACTERIZADOS E DESCRITOS NA MATRÍCULA {matricula}, LIVRO {livro}, {cartorio}.",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "proprietario_alienacao_imovel": [
+      {
+        "id": "grp_edeabef34c",
+        "nome": "Documentação do garantidor",
+        "itens": [
+          {
+            "id": "itm_21281000b1",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_72e340dbd6",
+            "nome": "Contrato social ou estatuto (quando PJ)",
+            "tipo": "checklist",
+            "ajuda": "Que comprove a permissão em ofertar bens em garantia.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_84e2851247",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "Quando renda zerada, é necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_c88e53e534",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_d993de801e",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "bem_alienacao_movel": [
+      {
+        "id": "grp_44b4f98e53",
+        "nome": "Documentação do bem",
+        "itens": [
+          {
+            "id": "itm_83856c43f9",
+            "nome": "Consulta ao Sistema Nacional de Gravames",
+            "tipo": "checklist",
+            "ajuda": "Necessária quando for alienação de veículos usados.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_c42a28f292",
+            "nome": "Tabela FIPE",
+            "tipo": "checklist",
+            "ajuda": "Em caso de veículos usados, consultar a tabela FIPE.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_1f79fd6812",
+            "nome": "Código FINAME",
+            "tipo": "checklist",
+            "ajuda": "Não se aplica para veículos utilitários.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      },
+      {
+        "id": "grp_d5597b906e",
+        "nome": "Descrição legal",
+        "itens": [
+          {
+            "id": "itm_2ce8bb4f57",
+            "nome": "Modelo de descrição da alienação de bem móvel",
+            "tipo": "texto",
+            "ajuda": "Modelo extraído da aba ALIENAÇÃO do Excel original.",
+            "template": "O(S) EMITENTE(S) ENTREGA(M), NESTE ATO, EM ALIENAÇÃO FIDUCIÁRIA, O(S) BEM(NS) LIVRE(S) E DESEMBARAÇADO(S) DE QUAISQUER ÔNUS, INCLUSIVE DÉBITOS FISCAIS, A SEGUIR DESCRITO(S): {descricao_bem}, MARCA {marca}, SITUADO NA PROPRIEDADE {propriedade}, MUNICÍPIO DE {municipio}-{uf}. SE O BEM ALIENADO FIDUCIARIAMENTE FOR VEÍCULO AUTOMOTOR, A MENÇÃO À GARANTIA DEVE CONSTAR DO CERTIFICADO DE REGISTRO.",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "proprietario_alienacao_movel": [
+      {
+        "id": "grp_6b4821c563",
+        "nome": "Documentação do garantidor",
+        "itens": [
+          {
+            "id": "itm_e0df014aa1",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_6554ad581f",
+            "nome": "Contrato social ou estatuto (quando PJ)",
+            "tipo": "checklist",
+            "ajuda": "Que comprove a permissão em ofertar bens em garantia.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_290b7d8441",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "Quando renda zerada, é necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_762db82839",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_7e0a846f52",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "bem_penhor_pecuario": [
+      {
+        "id": "grp_bf1280144d",
+        "nome": "Documentação do rebanho",
+        "itens": [
+          {
+            "id": "itm_f26a9aec1a",
+            "nome": "Sem warrant",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_3e1ab0afb8",
+            "nome": "Estimativa de penhor",
+            "tipo": "checklist",
+            "ajuda": "Laudo do bem inserido em garantia - exceto para máquinas ou equipamentos.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_280c21dc7a",
+            "nome": "CND de ônus penhor",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_049fbfce7b",
+            "nome": "Orçamento",
+            "tipo": "checklist",
+            "ajuda": "Apresentar quando penhor de máquinas ou equipamentos - válido 30 dias.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_4432139209",
+            "nome": "Consulta CFI",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_392179efe5",
+            "nome": "Soma das garantias reais > 30%",
+            "tipo": "checklist",
+            "ajuda": "Se não, referendar no CONSAD.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      },
+      {
+        "id": "grp_43f6f5db0d",
+        "nome": "Descrição legal",
+        "itens": [
+          {
+            "id": "itm_a55cf3851d",
+            "nome": "Modelo de descrição do penhor pecuário",
+            "tipo": "texto",
+            "ajuda": "Modelo extraído da aba PENHOR PEC. do Excel original (variante bovinos; adaptar para maquinários se necessário).",
+            "template": "PENHOR CEDULAR DE {grau}º GRAU O SEGUINTE BEM: {quantidade} BOVINOS {sexo}, COM IDADE ACIMA DE {idade_meses} MESES, IDENTIFICADAS COM A MARCA {marca}, NA ANCA DO LADO {lado}, QUE ESTÃO OU SERÃO APASCENTADAS NA FAZENDA {fazenda}, MATRÍCULA {matricula}, LOCALIZADO NO MUNICÍPIO DE {municipio}-{uf}, PROPRIEDADE DE {proprietario}. VALOR UNITÁRIO DE R$ {valor_unitario}, TOTALIZANDO O VALOR DE R$ {valor_total}.",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "proprietario_penhor_pecuario": [
+      {
+        "id": "grp_533ca5df09",
+        "nome": "Documentação do garantidor",
+        "itens": [
+          {
+            "id": "itm_89df9080c4",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_e3b26d6abd",
+            "nome": "Contrato social ou estatuto (quando PJ)",
+            "tipo": "checklist",
+            "ajuda": "Que comprove a permissão em ofertar bens em garantia.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_f4b0ae8e2c",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "Quando renda zerada, é necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_d463404848",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_01e86089b3",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "bem_penhor_agricola": [
+      {
+        "id": "grp_19f3c44059",
+        "nome": "Documentação da lavoura",
+        "itens": [
+          {
+            "id": "itm_407f8fae73",
+            "nome": "Estimativa de penhor",
+            "tipo": "checklist",
+            "ajuda": "Laudo do bem inserido em garantia - exceto para máquinas e equipamentos.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_73767582e6",
+            "nome": "CND de ônus penhor",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_25e1e7647f",
+            "nome": "Orçamento",
+            "tipo": "checklist",
+            "ajuda": "Apresentar quando penhor de máquinas ou equipamentos - válido 30 dias.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_c687bb8506",
+            "nome": "Consulta CFI",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_20c387fc3e",
+            "nome": "Soma das garantias reais > 30%",
+            "tipo": "checklist",
+            "ajuda": "Se não, referendar no CONSAD.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      },
+      {
+        "id": "grp_216c5b04a2",
+        "nome": "Descrição legal",
+        "itens": [
+          {
+            "id": "itm_09391fdec1",
+            "nome": "Modelo de descrição do penhor agrícola",
+            "tipo": "texto",
+            "ajuda": "Modelo extraído da aba PENHOR AGR. do Excel original.",
+            "template": "PENHOR CEDULAR DE {grau}º GRAU O SEGUINTE BEM: {quantidade} SACAS DE {cultura} DE 60 KG CADA, TIPO EXPORTAÇÃO, QUE SERÃO PRODUZIDAS DURANTE A SAFRA {safra}, NA FAZENDA {fazenda}, MATRÍCULA {matricula}, LOCALIZADO NO MUNICÍPIO DE {municipio}-{uf}, PROPRIEDADE DE {proprietario}. VALOR UNITÁRIO DE R$ {valor_unitario} A SACA, TOTALIZANDO O VALOR DE R$ {valor_total}.",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "proprietario_penhor_agricola": [
+      {
+        "id": "grp_7bc6868f19",
+        "nome": "Documentação do garantidor",
+        "itens": [
+          {
+            "id": "itm_ccaa732fbe",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_1cb521f8e5",
+            "nome": "Contrato social ou estatuto (quando PJ)",
+            "tipo": "checklist",
+            "ajuda": "Que comprove a permissão em ofertar bens em garantia.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_65755209d5",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "Quando renda zerada, é necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_a52d0cfbc2",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_d1bd70acdc",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ],
+    "bem_aval": [],
+    "proprietario_aval": [
+      {
+        "id": "grp_985332f1b0",
+        "nome": "Documentação do avalista",
+        "itens": [
+          {
+            "id": "itm_4536918b5e",
+            "nome": "Negativa de união estável",
+            "tipo": "checklist",
+            "ajuda": "Se estado civil diferente de casado, modelo no Sharepoint.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_d43040e1e6",
+            "nome": "QRSA",
+            "tipo": "checklist",
+            "ajuda": "Conferir na plataforma RSAC. Se nível alto, submeter ao Nível 4.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_ee6ad19e2a",
+            "nome": "CND regularidade FGTS",
+            "tipo": "checklist",
+            "ajuda": "Se PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_eaeb7bc14c",
+            "nome": "Renda atualizada",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_f8c0f63c73",
+            "nome": "Renda zerada",
+            "tipo": "checklist",
+            "ajuda": "É necessário comprovante de renda/faturamento mesmo que zerado, conforme Escopo 111 da CNAC.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_b767b41c83",
+            "nome": "Renda atualizada do cônjuge",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_1133f99c80",
+            "nome": "Se proponente PJ, vincular um sócio como avalista",
+            "tipo": "checklist",
+            "ajuda": "Se PJ, verificar se o contrato social e alterações estão no CAPES.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_b58e7b5dec",
+            "nome": "Anotações de crime",
+            "tipo": "checklist",
+            "ajuda": "Apresentar certidão de objeto e pé. Quando não houver, solicitar parecer jurídico do resumo do processo e anexar CNJ, antecedentes criminais e certidão TRF (cível e criminal).",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_0b7ff575d6",
+            "nome": "SERASA",
+            "tipo": "checklist",
+            "ajuda": "Validade de 30 dias.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_dfa4ed8667",
+            "nome": "BACEN",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          },
+          {
+            "id": "itm_de3942c25b",
+            "nome": "Cadastro compartilhado (avalista e cônjuge)",
+            "tipo": "checklist",
+            "ajuda": "1º CAPES > Parceiro de Negócio > Instituições de Relacionamento (precisa ter a Instituição 1). 2º CAPES > Produtos Bancoob > Endereço de Correspondência. 3º CAPES > Produtos Bancoob > Dados do Cliente.",
+            "template": "",
+            "textoDevolutivaPadrao": ""
+          }
+        ]
+      }
+    ]
+  },
+  "linhas": {
+    "bndes": [
+      {
+        "id": "lin_6727e329c9",
+        "nome": "Investimento BNDES"
+      },
+      {
+        "id": "lin_5df5ca11fa",
+        "nome": "BNDES Finame"
+      }
+    ],
+    "fno": [
+      {
+        "id": "lin_9bfbfc4da0",
+        "nome": "Investimento FNO"
+      }
+    ],
+    "fco": [
+      {
+        "id": "lin_ebf4a7781a",
+        "nome": "Rural"
+      },
+      {
+        "id": "lin_22d977796c",
+        "nome": "Empresarial"
+      }
+    ],
+    "controlado": [
+      {
+        "id": "lin_ec78eaef1a",
+        "nome": "Custeio - Repasse"
+      },
+      {
+        "id": "lin_8e9fe28fd4",
+        "nome": "Custeio - Singular"
+      },
+      {
+        "id": "lin_baa9027c7d",
+        "nome": "Investimento - Repasse"
+      },
+      {
+        "id": "lin_3f2986beb8",
+        "nome": "Investimento - Singular"
+      }
+    ],
+    "livre": [
+      {
+        "id": "lin_3e0b27d6ae",
+        "nome": "Custeio Repasse"
+      },
+      {
+        "id": "lin_3d10832269",
+        "nome": "Custeio Singular"
+      }
+    ]
+  },
+  "documentos": [
+    {
+      "id": "grp_074ead6c86",
+      "nome": "Documentacao BNDES",
+      "itens": [
+        {
+          "id": "itm_6d485d89f7",
+          "nome": "Declaracao TFBD",
+          "tipo": "checklist",
+          "ajuda": "Quando a operacao estiver na taxa TFBD (dolar).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_603cfbcdf5",
+          "nome": "Consulta CFI - FCC (financiavel caso a caso)",
+          "tipo": "checklist",
+          "ajuda": "Seguir orientacoes do print ao lado: https://web.bndes.gov.br/planilha-cfi/#/produto/dadosGerais",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_0a59ef958b",
+          "nome": "Importados sem similar nacional",
+          "tipo": "checklist",
+          "ajuda": "Verificar cartilha orientativa na pasta de CCI e normativos. Se maquina, anexar Ex-tarifario e manter a consulta vigente no Siscomex (https://portalunico.siscomex.gov.br/portal/). Se importado, anexar Resolucao Camex vigente que ampara a condicao de importado novo sem similar nacional, e o extrato de Declaracao de Importacao de Consumo (DI). Financiamento de sistemas geradores fotovoltaicos precisa que o sistema seja composto pelas 4 partes - ler cartilha.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_56b1e715fe",
+          "nome": "Consulta CFI (FINAME)",
+          "tipo": "checklist",
+          "ajuda": "https://ws.bndes.gov.br/cfi_catalogo/",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_a5be4c35e6",
+          "nome": "Viabilidade",
+          "tipo": "checklist",
+          "ajuda": "Para BNDES Rural, usar a \"Viabilidade do Rural\".",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_26c2d43cca",
+          "nome": "Projeto / Plano Simplificado / Orcamento (FINAME)",
+          "tipo": "checklist",
+          "ajuda": "Quando Pronaf, pode utilizar o plano simplificado disponivel na DAF. Em caso de projeto externo, deve conter as informacoes do plano referente a identificacao do proponente (preenchimento da concessao).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_26458496fe",
+          "nome": "Projeto (quando correcao ou reforma)",
+          "tipo": "checklist",
+          "ajuda": "Verificar analise de solo (1 ano de validade), recomendacao tecnica e cronograma de execucao. A quantidade de hectares para execucao deve sempre ser redonda (ex.: 120 ha).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_5680a16f38",
+          "nome": "Ficha de bovinos de outros imoveis",
+          "tipo": "checklist",
+          "ajuda": "Validade de 60 dias. Deve comprovar os animais informados na viabilidade (rural).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_73033dc8a2",
+          "nome": "CPRF BNDES",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_1119864905",
+          "nome": "Boletador",
+          "tipo": "checklist",
+          "ajuda": "IC 30293.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_21a381a785",
+          "nome": "Print CPRF do SISBR 2.0 e cotacao",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_7683562786",
+          "nome": "Recibo do CAR",
+          "tipo": "checklist",
+          "ajuda": "Circular SUP/ADIG Nº 42/2024-BNDES.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_314d64339f",
+          "nome": "Taxa",
+          "tipo": "checklist",
+          "ajuda": "Somente TFB (CCI 958/2024).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_11d18a2557",
+          "nome": "Consulta Agrotools",
+          "tipo": "checklist",
+          "ajuda": "Referente ao recibo do CAR.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_1bf44f998b",
+          "nome": "Lista de todos os fornecedores presentes no cadastro de fornecedores direto",
+          "tipo": "checklist",
+          "ajuda": "Quando o ramo de atuacao for abate e/ou fabricacao de produtos de carne bovina.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_9df412481c",
+          "nome": "Materiais industrializados",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_5e938360cb",
+          "nome": "Data emissao NF",
+          "tipo": "checklist",
+          "ajuda": "Verificar a data de emissao da NF: deve ser de ate 12 meses antes da data da proposta na concessao de credito BNDES.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_d582a93e14",
+          "nome": "Inscricao estadual",
+          "tipo": "checklist",
+          "ajuda": "Verificar se o numero da I.E. na NF condiz com a I.E. da area beneficiada.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_7379218fd7",
+          "nome": "Chave de acesso",
+          "tipo": "checklist",
+          "ajuda": "Verificar se a chave de acesso esta correta na planilha de materiais industrializados - a chave nao pode ter espacos, para que o BNDES consiga fazer a leitura.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_6691805db1",
+          "nome": "Valor total da NF e valor dos produtos",
+          "tipo": "checklist",
+          "ajuda": "Verificar se ha divergencia entre o valor total dos produtos e o valor total da NF - sera necessario fazer um calculo proporcional para cada produto.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_d023159572",
+          "nome": "NCM, CST",
+          "tipo": "checklist",
+          "ajuda": "Fazer a validacao no site: https://www.bndes.gov.br/wps/portal/site/home/financiamento/produto/finame-materiais-industrializados",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        },
+        {
+          "id": "itm_dc817d2429",
+          "nome": "Itens da NF",
+          "tipo": "checklist",
+          "ajuda": "Conferir o NCM e o CST de todos os itens da nota, caso tenha mais de um.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "bndes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grp_96dd727b36",
+      "nome": "Documentacao FNO",
+      "itens": [
+        {
+          "id": "itm_3f9fb871c0",
+          "nome": "Projeto (quando correcao ou reforma)",
+          "tipo": "checklist",
+          "ajuda": "Verificar analise de solo (1 ano de validade), recomendacao tecnica e cronograma de execucao. A quantidade de hectares para execucao deve sempre ser redonda (ex.: 120 ha).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_c3fcd622a1",
+          "nome": "Projeto / Roteiro de Informacoes / Orcamento",
+          "tipo": "checklist",
+          "ajuda": "Orcamento quando maquina ou veiculos.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_b963e858d6",
+          "nome": "Consulta CFI (FINAME)",
+          "tipo": "checklist",
+          "ajuda": "Ou comprovacao de que nao tem similar nacional.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_8284a3e744",
+          "nome": "CNJ",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_248eba0f13",
+          "nome": "Proposta e lista de verificacao",
+          "tipo": "checklist",
+          "ajuda": "Necessario estar assinada. Caso necessario, consultar a \"Lista de Verificacao FNO\".",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_79cd309677",
+          "nome": "Viabilidade",
+          "tipo": "checklist",
+          "ajuda": "Validar as informacoes em relacao aos bovinos, safra, Bacen, taxa, prazo etc.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        },
+        {
+          "id": "itm_c5da3a3a97",
+          "nome": "Importados sem similar nacional",
+          "tipo": "checklist",
+          "ajuda": "Verificar cartilha orientativa na pasta de CCI e normativos. Se maquina, anexar Ex-tarifario e manter a consulta vigente no Siscomex (https://portalunico.siscomex.gov.br/portal/). Se importado, anexar Resolucao Camex vigente que ampara a condicao de importado novo sem similar nacional. Financiamento de sistemas geradores fotovoltaicos precisa que o sistema seja composto pelas 4 partes - ler cartilha. Extrato de Declaracao de Importacao de Consumo (DI).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": "todas",
+          "fontes": [
+            "fno"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grp_c02cc37b7f",
+      "nome": "Documentacao FCO Rural",
+      "itens": [
+        {
+          "id": "itm_b1e90724dc",
+          "nome": "Carta consulta (Parte I, II e III)",
+          "tipo": "checklist",
+          "ajuda": "Se a operacao for acima de R$ 1 milhao ou for a terceira operacao em 12 meses.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_0dc52c9916",
+          "nome": "CNJ",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_8455a5268b",
+          "nome": "Modelo 30027",
+          "tipo": "checklist",
+          "ajuda": "Conferir se esta na versao atualizada.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_35d37032ab",
+          "nome": "Demais documentos solicitados no Modelo 30027",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_14b76e9cf1",
+          "nome": "Projeto / Roteiro de Informacoes / Orcamento",
+          "tipo": "checklist",
+          "ajuda": "Orcamento quando maquina; demais explicacoes no Modelo 30027. Se for veiculo, precisa de projeto que comprove a atividade agropecuaria.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_2549b9ba74",
+          "nome": "Consulta CFI (FINAME)",
+          "tipo": "checklist",
+          "ajuda": "Ou comprovacao de que nao tem similar nacional (nao necessario para energia convencional).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_c497f17b86",
+          "nome": "Certificado / Laudo de avaliacao de usado (revenda autorizada)",
+          "tipo": "checklist",
+          "ajuda": "Para maquinas usadas.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_21dd483dcc",
+          "nome": "Viabilidade",
+          "tipo": "checklist",
+          "ajuda": "Validar as informacoes em relacao aos bovinos, safra, Bacen, taxa, prazo etc.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_ebf4a7781a"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grp_3a6a46b5ef",
+      "nome": "Documentacao FCO Empresarial",
+      "itens": [
+        {
+          "id": "itm_c6e60e2dd7",
+          "nome": "Carta consulta",
+          "tipo": "checklist",
+          "ajuda": "Se a operacao for acima de R$ 1 milhao ou for a terceira operacao no prazo de 12 meses (consultar extrato Sicor).",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_ce4ce16837",
+          "nome": "CNJ",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_866589c4ad",
+          "nome": "Modelo 30028",
+          "tipo": "checklist",
+          "ajuda": "Conferir se esta na versao atualizada.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_70080b6ceb",
+          "nome": "Demais documentos solicitados no Modelo 30028",
+          "tipo": "checklist",
+          "ajuda": "",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_fd14036577",
+          "nome": "Projeto / Roteiro de Informacoes / Orcamento",
+          "tipo": "checklist",
+          "ajuda": "Orcamento quando maquina; demais explicacoes no Modelo 30038. Se for veiculo, precisa de projeto que comprove a atividade agropecuaria.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_bb278428c2",
+          "nome": "Imovel cadastrado no CAPES",
+          "tipo": "checklist",
+          "ajuda": "Verificar se o imovel esta com o cadastro completo, incluindo o simples e o avancado; mesmo que seja como participacoes, e necessario informar um imovel para o cadastro.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        },
+        {
+          "id": "itm_1794e84fe4",
+          "nome": "Dardo",
+          "tipo": "checklist",
+          "ajuda": "Esta informando no parecer a finalidade? Investimento e capital de giro associado, dissociado ou caminhoes.",
+          "template": "",
+          "textoDevolutivaPadrao": "",
+          "linhas": [
+            "lin_22d977796c"
+          ],
+          "fontes": [
+            "fco"
+          ]
+        }
+      ]
+    }
+  ],
+  "area_beneficiada": {
+    "bem": [
+      {
+        "id": "grp_be7139a317",
+        "nome": "Documentos do imóvel",
+        "itens": [
+          {
+            "id": "itm_d18474e97a",
+            "nome": "DAP/CAF ativa",
+            "tipo": "checklist",
+            "ajuda": "> Não aceita para FUNDOS CONSTITUCIONAIS (https://smap14.mda.gov.br/extratodap/)\n- Verificar se DAP/CAF está lançada no CAPES do Proponente: Parceiro de Negócios > Certidões.\n- Verificar se a renda cadastrada é oriunda da CAF/DAP.",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_22288fba67",
+            "nome": "Matrícula",
+            "tipo": "checklist",
+            "ajuda": "CONFERIR:\n> Validade: 12 meses\n> Consta usufruto, espólio, processos judiciais, desmembramento, etc",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_02661283c3",
+            "nome": "Contrato de arrendamento / anuência",
+            "tipo": "checklist",
+            "ajuda": "> Deve constar clausula que permita dar em penhor a produção\n> Verificar quantidade permitida para exploração no arrendamento - anuência",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_123e6fced9",
+            "nome": "Contrato social",
+            "tipo": "checklist",
+            "ajuda": "Se o imóvel for arrendado e a proprietária seja uma PJ atentar-se a:\n1.Pesquisar na junta comercial a última atualização;\n2.Verificar se no capes está atualizado de acordo com a ultima atualização.\n3.Verificar se é passível em estar operando com bndes e fundos (principalmente nas atas).\n4.Verificar se é possível arrendar as áreas pertencentes aquela PJ.",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_11f49a99a8",
+            "nome": "Croqui - roteiro de acesso",
+            "tipo": "checklist",
+            "ajuda": "> Que contenha a descrição correta da localização de como chegar ao imóvel",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_b834a15fe9",
+            "nome": "Recibo do CAR",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_6a33dfbdc9",
+            "nome": "Demonstrativo do CAR",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_300d0e07a2",
+            "nome": "NIRF",
+            "tipo": "checklist",
+            "ajuda": "> Dispensado para PRONAF OU ITR",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_2b2ebc2846",
+            "nome": "Dispensa ou outorga d'água",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_87edaa223c",
+            "nome": "Declaração de adequação ao zoneamento ecológico-econômico (ZEE)",
+            "tipo": "checklist",
+            "ajuda": "> Se for assinatura digita: validar",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_726bc6ed2e",
+            "nome": "Dispensa ou licença ambiental",
+            "tipo": "checklist",
+            "ajuda": "> RO - inexigibilidade;\n> MT - APF\n> Verificar ao tipo de atividade, deve estar de acordo com a finalidade do crédito\n\nPARA OPERAÇÕES FINAME - MÁQUINAS E EQUIPAMENTOS ISOLADOS OU MI, NÃO É NECESSÁRIO SOLICITAR LICENÇA AMBIENTAL\n\nPARA PCA (automático)\n>Solicitar LP (licença prévia) ou LI (licença de instação) para novos\n>LO (licença de operação) para ampliação",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_8cd56fca64",
+            "nome": "Agrotools",
+            "tipo": "checklist",
+            "ajuda": "> Realizar a verificação da área enviada pelo projetista\n\n>Se possuir sobreposição com prodes/mapbiomas:\na) 1º de abril de 2026, quando se tratar de imóveis com área superior a quatro módulos fiscais; e\nb) 4 de janeiro de 2027, quando se tratar de imóveis com área de até quatro módulos fiscais\nFoi constatado supressão da vegetação após 31/07/2019, conforme MCR 2-9-17. O cooperado só poderá acessar o crédito rural ao apresentar as documentações previstas no MCR 2-9-18.\n\n> Se possuir sobreposição com FPB:\nApresentar imóvel matrícula no registro de imóveis;\nImóveis com até quinze módulos fiscais, desde que seja mantida a vegetação nativa na área de Floresta Pública Tipo B e a área ocupada pelo empreendimento a ser financiado não esteja inserida, total ou parcialmente, na respectiva Floresta Pública.\n\n> Se possuir sobreposição com embargo:\nMCR 2-9-10 até 2-9-13\n\n>Se possuir sobreposição com UC (unidade de conservação):\nNa ausência de PLANO DE MANEJO para RESEX (reserva extrativista), Floresta Nacional e Reserva de Desenvolvimento Sustentável, será admitida para a concessão de crédito:\n1.Anuência publicada no Sítio Eletrônico do órgão oficial, desde que:\n1.1 A operação seja de PRONAF\n1.2 As atividades produtivas sejam destinadas a implementação de práticas sustentáveis sejam compatíveis com os objetos de criação da Unidade.",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_ee0c0cd565",
+            "nome": "Inscrição estadual",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_ec860cc607",
+            "nome": "Contrato de condomínio",
+            "tipo": "checklist",
+            "ajuda": "> Pode ser utilizado também o contrato de parceria exploração rural, desde que conste o percentual de cada envolvido",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_f4a6676555",
+            "nome": "Ficha do contribuinte",
+            "tipo": "checklist",
+            "ajuda": "",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_65f7872347",
+            "nome": "Imóvel avançado no CAPES",
+            "tipo": "checklist",
+            "ajuda": "> Deve estar completo, informando a matrícula, endereço do imóvel;",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_e415086073",
+            "nome": "Ficha de bovinos do imóvel beneficiado",
+            "tipo": "checklist",
+            "ajuda": "> Validade: 60 dias - Mesmo que zerada, deve ser apresentadas para operações de CNAE PECUÁRIO",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_a6554065c9",
+            "nome": "Anotações que vai precisar serem descritas para o CCS?",
+            "tipo": "checklist",
+            "ajuda": "PEM, PEP, CRIME AMBIENTAL, EMBARGO E QUALQUER OUTRA ANOTAÇÃO QUE VÁ GERAR DEVOLUTIVA DO CCS",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          }
+        ]
+      }
+    ],
+    "proprietario": [
+      {
+        "id": "grp_4d43795a41",
+        "nome": "Documentos do proprietário",
+        "itens": [
+          {
+            "id": "itm_1ae29e412c",
+            "nome": "CND embargo",
+            "tipo": "checklist",
+            "ajuda": "https://servicos.ibama.gov.br/ctf/publico/areasembargadas/ConsultaPublicaAreasEmbargadas.php",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_1b1494fbd6",
+            "nome": "CND IBAMA",
+            "tipo": "checklist",
+            "ajuda": "https://servicos.ibama.gov.br/sicafiext/",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_e90706eba3",
+            "nome": "Proprietário do imóvel",
+            "tipo": "checklist",
+            "ajuda": "Possui um cadastro simples com:\n> ESTADO E CIDADE DE NASCIMENTO\n> ESTADO CIVIL\n> CPF DO CONJUGUE E REGIME DE CASAMENTO",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          },
+          {
+            "id": "itm_cc2ac377da",
+            "nome": "Cadastro compartilhado",
+            "tipo": "checklist",
+            "ajuda": "> 1º CAPES -> PARCEIRO DE NEGÓCIO -> INSTITUIÇÕES DE RELACIONAMENTO (TEM QUE POSSUIR A INSTITUIÇÃO 1).",
+            "template": "",
+            "textoDevolutivaPadrao": "",
+            "linhas": "todas",
+            "fontes": "todas"
+          }
+        ]
+      }
+    ]
+  }
+}

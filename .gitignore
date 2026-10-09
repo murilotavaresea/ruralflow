@@ -1,0 +1,10 @@
+# Ferramentas locais e planilha de trabalho — nao fazem parte do app
+.tools/
+*.xlsb
+
+# Node/Python ja tem seus proprios .gitignore em frontend/ e backend/, isso aqui e so
+# reforco pra arquivos que poderiam acabar sendo criados na raiz
+__pycache__/
+*.pyc
+.venv/
+node_modules/

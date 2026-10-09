@@ -1,0 +1,27 @@
+.barra-progresso {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barra-progresso-rotulo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-ink-700);
+}
+
+.barra-progresso-trilha {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-border-soft);
+  overflow: hidden;
+}
+
+.barra-progresso-preenchimento {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #88c3b5, #6faf9d);
+  transition: width 0.3s ease;
+}
