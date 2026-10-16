@@ -1,84 +1,68 @@
 .operacao {
-  max-width: 1120px;
+  /* altura da faixa de contexto fixa; atualizada por Operacao.jsx (ResizeObserver) */
+  --contexto-altura: 96px;
+
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 20px 20px 56px;
+  padding: var(--space-3) 20px 56px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
-.operacao-header {
+.operacao-cabecalho {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
-.operacao-header h1 {
+.operacao-cabecalho h1 {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 19px;
+  font-size: var(--fs-xl);
   color: var(--color-ink-900);
 }
 
-.operacao-header p {
-  margin: 2px 0 0;
-  font-size: 11.5px;
-  color: var(--color-ink-700);
-}
-
-.operacao-header-acoes {
+.operacao-cabecalho-acoes {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: var(--space-2);
   flex-wrap: wrap;
-}
-
-.operacao-header-acoes button {
-  border: 1px solid var(--color-border-soft);
-  background: #fff;
-  color: var(--color-ink-900);
-  border-radius: 10px;
-  padding: 6px 11px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.operacao-header-acoes button:hover {
-  background: var(--color-sage-50);
-}
-
-.operacao-header-acao-perigo {
-  color: #8d2b2b !important;
 }
 
 .operacao-corpo {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
 }
 
 .operacao-sidebar {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 0 0 198px;
-  width: 198px;
+  flex: 0 0 204px;
+  width: 204px;
   padding: 6px;
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
   border: 1px solid var(--color-border-soft);
   position: sticky;
-  top: 16px;
+  top: calc(var(--contexto-altura) + var(--space-4));
 }
 
 .operacao-sidebar button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 32px;
   border: none;
   background: none;
-  padding: 9px 12px;
+  padding: 6px 10px;
   border-radius: 9px;
-  font-size: 11.5px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--color-ink-700);
   cursor: pointer;
@@ -86,12 +70,54 @@
 }
 
 .operacao-sidebar button:hover {
-  background: var(--color-sage-50);
+  background: var(--surface-muted);
 }
 
 .operacao-sidebar button.ativa {
-  background: var(--color-ink-900);
-  color: #fff;
+  background: var(--active-bg);
+  color: var(--active-fg);
+}
+
+.aba-nome {
+  min-width: 0;
+}
+
+.aba-indicadores {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.aba-selo {
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-soft);
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.aba-selo.completo {
+  background: var(--status-ok-soft);
+  color: var(--status-ok-text);
+}
+
+.aba-selo.pendente {
+  background: var(--status-pendente-soft);
+  color: var(--status-pendente-text);
+}
+
+.aba-selo.atencao {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* No botao ativo (fundo escuro no claro / claro no escuro) os selos precisam contrastar */
+.operacao-sidebar button.ativa .aba-selo {
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f2a2e;
 }
 
 .operacao-conteudo {
@@ -99,24 +125,49 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
+  scroll-margin-top: calc(var(--contexto-altura) + var(--space-3));
 }
 
-@media (max-width: 760px) {
+.operacao-conteudo:focus {
+  outline: none;
+}
+
+/* Telas estreitas: a lateral vira uma faixa rolavel que fica presa logo abaixo da faixa de contexto */
+@media (max-width: 860px) {
   .operacao-corpo {
     flex-direction: column;
+    gap: var(--space-3);
   }
 
   .operacao-sidebar {
     flex-direction: row;
-    flex-wrap: wrap;
     width: 100%;
-    position: static;
+    flex-basis: auto;
+    overflow-x: auto;
+    top: var(--contexto-altura);
+    z-index: 20;
+    scrollbar-width: thin;
+    background: var(--surface);
+  }
+
+  .operacao-sidebar button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .operacao-conteudo {
+    width: 100%;
+    scroll-margin-top: calc(var(--contexto-altura) + 60px);
   }
 }
 
 @media (max-width: 640px) {
   .operacao {
-    padding: 16px 12px 48px;
+    padding: var(--space-3) 12px 48px;
+  }
+
+  .operacao-cabecalho h1 {
+    font-size: var(--fs-lg);
   }
 }

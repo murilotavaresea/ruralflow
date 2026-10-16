@@ -1,0 +1,151 @@
+.contexto-operacao {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px var(--space-3);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+/* sem suporte a backdrop-filter, o fundo precisa ser opaco pra nao misturar com o conteudo */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .contexto-operacao {
+    background: var(--surface);
+  }
+}
+
+.contexto-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.contexto-identidade {
+  min-width: 0;
+}
+
+.contexto-nome {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-ink-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contexto-nome.vazio {
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-ink-700);
+}
+
+.contexto-meta {
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-ink-700);
+  min-height: 1.2em;
+}
+
+.contexto-lateral {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.contexto-selo-local {
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--status-pendente-soft);
+  color: var(--status-pendente-text);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  cursor: help;
+}
+
+.contexto-salvamento {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-ink-700);
+}
+
+.contexto-salvamento-ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-ok);
+}
+
+.contexto-salvamento.salvando .contexto-salvamento-ponto {
+  background: var(--color-pendente);
+}
+
+.contexto-salvamento.erro {
+  color: var(--danger);
+  font-weight: 800;
+}
+
+.contexto-salvamento.erro .contexto-salvamento-ponto {
+  background: var(--danger);
+}
+
+.contexto-progresso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.contexto-progresso .barra-progresso {
+  flex: 1 1 220px;
+  min-width: 160px;
+}
+
+.contexto-contagens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-xs);
+  color: var(--color-ink-700);
+}
+
+.contexto-contagens strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-900);
+}
+
+.contexto-contagens .ok strong {
+  color: var(--status-ok-text);
+}
+
+.contexto-contagens .pendente strong {
+  color: var(--status-pendente-text);
+}
+
+@media (max-width: 640px) {
+  .contexto-operacao {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .contexto-contagens li:last-child {
+    display: none;
+  }
+}

@@ -1,15 +1,17 @@
-import { PROGRAMAS } from "./operacaoModel";
-import { rotuloTipoGarantia } from "./garantiaModel";
-import { calcularIndiceGarantia } from "./capacidadePagamento";
+import { rotuloPrograma } from "./operacaoModel";
+import {
+  indiceCoberturaGarantia,
+  indiceCoberturaTotal,
+  rotuloTipoGarantia,
+  tipoSemValor,
+  tipoTemAnaliseMatricula,
+} from "./garantiaModel";
+import { descreverAnaliseMatricula, descreverImovelGarantia } from "./analiseMatricula";
 
 function formatarMoeda(valor) {
   const numero = Number(valor);
   if (!Number.isFinite(numero) || numero === 0) return null;
   return numero.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
-
-function rotuloPrograma(chave) {
-  return PROGRAMAS.find((p) => p.chave === chave)?.rotulo || chave;
 }
 
 // Recompoe o texto corrido do parecer a partir dos campos preenchidos — equivalente ao que
@@ -19,8 +21,8 @@ export default function gerarParecerTexto(operacao, capacidade) {
   const { proponente, proposta } = operacao;
   const linhas = [];
 
-  linhas.push(`PARECER TECNICO - ANALISE DE OPERACAO DE CREDITO RURAL`);
-  linhas.push(`Programa: ${rotuloPrograma(proposta.programa)}`);
+  linhas.push(`PARECER TÉCNICO - ANÁLISE DE OPERAÇÃO DE CRÉDITO RURAL`);
+  linhas.push(`Fonte de recurso: ${rotuloPrograma(proposta.programa)}`);
   linhas.push("");
 
   if (proponente.nome) {
@@ -28,13 +30,13 @@ export default function gerarParecerTexto(operacao, capacidade) {
       `Proponente: ${proponente.nome}${proponente.documento ? ` (${proponente.documento})` : ""}.`
     );
   }
-  if (proponente.setorAtuacao) linhas.push(`Setor de atuacao: ${proponente.setorAtuacao}.`);
+  if (proponente.setorAtuacao) linhas.push(`Setor de atuação: ${proponente.setorAtuacao}.`);
   if (proponente.risco || proponente.pd || proponente.score) {
     const partes = [];
     if (proponente.risco) partes.push(`risco ${proponente.risco}`);
     if (proponente.pd) partes.push(`PD ${proponente.pd}`);
     if (proponente.score) partes.push(`score ${proponente.score}`);
-    linhas.push(`Classificacao de risco: ${partes.join(", ")}.`);
+    linhas.push(`Classificação de risco: ${partes.join(", ")}.`);
   }
   const renda = formatarMoeda(proponente.rendaAnual);
   if (renda) linhas.push(`Renda anual informada: ${renda}.`);
@@ -50,11 +52,11 @@ export default function gerarParecerTexto(operacao, capacidade) {
   const valorOperacao = formatarMoeda(proposta.valorOperacao);
   if (valorOperacao) {
     const prazo = proposta.prazoMeses ? `${proposta.prazoMeses} meses` : "prazo a definir";
-    const carencia = proposta.carenciaMeses ? `${proposta.carenciaMeses} meses de carencia` : "sem carencia informada";
-    linhas.push(`Valor da operacao: ${valorOperacao}, ${prazo}, ${carencia}.`);
+    const carencia = proposta.carenciaMeses ? `${proposta.carenciaMeses} meses de carência` : "sem carência informada";
+    linhas.push(`Valor da operação: ${valorOperacao}, ${prazo}, ${carencia}.`);
   }
   if (proposta.taxaAnual) linhas.push(`Taxa de juros: ${proposta.taxaAnual}% a.a.`);
-  if (proposta.municipio) linhas.push(`Municipio do empreendimento: ${proposta.municipio}.`);
+  if (proposta.municipio) linhas.push(`Município do empreendimento: ${proposta.municipio}.`);
 
   if (capacidade?.beneficiario) {
     linhas.push("");
@@ -63,10 +65,10 @@ export default function gerarParecerTexto(operacao, capacidade) {
     if (rendaLiquidaFmt) {
       const indiceTexto =
         indice === null
-          ? "nao foi possivel calcular (confira valor da operacao, taxa e prazo)"
+          ? "não foi possível calcular (confira valor da operação, taxa e prazo)"
           : `${(indice * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
       linhas.push(
-        `Capacidade de pagamento do beneficiario: renda liquida estimada em ${rendaLiquidaFmt}, indice de capacidade de ${indiceTexto}.`
+        `Capacidade de pagamento do beneficiário: renda líquida estimada em ${rendaLiquidaFmt}, índice de capacidade de ${indiceTexto}.`
       );
     }
   }
@@ -90,17 +92,27 @@ export default function gerarParecerTexto(operacao, capacidade) {
   if (garantias.length > 0) {
     linhas.push("");
     linhas.push("Garantias:");
-    const somaValores = garantias.reduce((soma, g) => soma + (Number(g.valor) || 0), 0);
     garantias.forEach((g) => {
-      const valorFmt = formatarMoeda(g.valor) || "valor nao informado";
-      const indice = calcularIndiceGarantia(g.valor, proposta.valorOperacao);
+      const indice = indiceCoberturaGarantia(g, proposta.valorOperacao);
       const coberturaTexto = indice === null ? "" : ` (cobertura de ${(indice * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%)`;
       const nomes = (g.garantidores || []).map((gd) => gd.nome).filter(Boolean).join(", ");
+      // o aval nao tem valor proprio: cobre a operacao toda
+      const valorTexto = tipoSemValor(g.tipo)
+        ? "cobre a totalidade da operação"
+        : formatarMoeda(g.valor) || "valor não informado";
       linhas.push(
-        `  - ${rotuloTipoGarantia(g.tipo)}: ${valorFmt}${coberturaTexto}${nomes ? `, garantidor(es): ${nomes}` : ""}.`
+        `  - ${rotuloTipoGarantia(g.tipo)}: ${valorTexto}${coberturaTexto}${nomes ? `, garantidor(es): ${nomes}` : ""}.`
       );
+      // analise dos graus ja registrados na matricula (hipoteca / alienacao de imovel)
+      const imovel = tipoTemAnaliseMatricula(g.tipo) ? descreverImovelGarantia(g) : null;
+      if (imovel) linhas.push(`    ${imovel}`);
+      const analise = tipoTemAnaliseMatricula(g.tipo) ? descreverAnaliseMatricula(g, proposta.valorOperacao) : null;
+      if (analise) {
+        linhas.push(`    ${analise.resumo}`);
+        analise.graus.forEach((grau) => linhas.push(`      - ${grau}`));
+      }
     });
-    const indiceTotal = calcularIndiceGarantia(somaValores, proposta.valorOperacao);
+    const indiceTotal = indiceCoberturaTotal(garantias, proposta.valorOperacao);
     if (indiceTotal !== null) {
       linhas.push(
         `  Cobertura total das garantias: ${(indiceTotal * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%.`
@@ -110,7 +122,7 @@ export default function gerarParecerTexto(operacao, capacidade) {
 
   linhas.push("");
   linhas.push(
-    "[Preencher observacoes adicionais sobre pendencias e recomendacao final antes de encaminhar o parecer.]"
+    "[Preencher observações adicionais sobre pendências e recomendação final antes de encaminhar o parecer.]"
   );
 
   return linhas.join("\n");

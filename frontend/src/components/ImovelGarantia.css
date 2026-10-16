@@ -1,0 +1,15 @@
+.garantia-imovel {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+}
+
+.garantia-imovel h4 {
+  margin: 0 0 6px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-ink-700);
+}

@@ -1,0 +1,204 @@
+.analise-matricula {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+}
+
+.analise-matricula h4 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-ink-700);
+}
+
+.analise-matricula-topo {
+  max-width: 360px;
+}
+
+/* --- tabela de graus ---------------------------------------------------------------------- */
+
+.analise-graus-rolagem {
+  overflow-x: auto;
+}
+
+.analise-graus {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  font-size: var(--fs-sm);
+}
+
+.analise-graus th {
+  padding: 0 4px 1px;
+  text-align: left;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-ink-700);
+  white-space: nowrap;
+}
+
+.analise-graus td {
+  padding: 0 3px;
+  background: var(--surface);
+  border-top: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.analise-graus td:first-child {
+  border-left: 3px solid var(--status-nao-avaliado);
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.analise-graus td:last-child {
+  border-right: 1px solid var(--color-border-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.analise-graus tr.aberto td:first-child {
+  border-left-color: var(--color-pendente);
+}
+
+.analise-graus tr.cancelado td:first-child {
+  border-left-color: var(--color-na);
+}
+
+.analise-graus tr.cancelado td {
+  opacity: 0.65;
+}
+
+.analise-graus input,
+.analise-graus select {
+  width: 100%;
+  min-height: 26px;
+  padding: 1px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-ink-900);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* a lista tem opcoes longas ("Aberto - Alienação/Outra IF"): sem largura minima o texto era cortado */
+.analise-graus select {
+  min-width: 190px;
+}
+
+.analise-graus input[type="date"] {
+  min-width: 128px;
+}
+
+.analise-graus input:hover,
+.analise-graus select:hover {
+  border-color: var(--color-border-strong);
+}
+
+.analise-graus input:focus,
+.analise-graus select:focus {
+  border-color: var(--focus);
+  background: var(--surface);
+}
+
+.analise-graus .campo-numerico input {
+  padding-left: 28px;
+}
+
+.analise-graus .campo-numerico-prefixo {
+  left: 6px;
+  font-size: var(--fs-xs);
+}
+
+.analise-graus .col-grau {
+  width: 64px;
+}
+
+.analise-graus .col-remover {
+  width: 32px;
+  text-align: center;
+}
+
+.analise-graus .col-remover .btn {
+  min-height: 22px;
+  padding: 0 6px;
+}
+
+.analise-matricula-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+/* --- resumo ----------------------------------------------------------------------------------- */
+
+.analise-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 12px;
+  margin: 0;
+}
+
+/* 8 itens (com "outra proposta") = 4x2, nunca 3+3+2 */
+.analise-resumo.itens-8 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .analise-resumo,
+  .analise-resumo.itens-8 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.analise-resumo > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--color-border-soft);
+}
+
+.analise-resumo dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-ink-700);
+}
+
+.analise-resumo dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-900);
+}
+
+.analise-resumo small {
+  font-size: var(--fs-xs);
+  color: var(--color-ink-700);
+}
+
+.analise-usar-grau {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--focus);
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -57,22 +57,41 @@ export default function Administracao() {
     escopoAreaBeneficiada
   );
 
+  const rotuloPainel = PAINEIS.find((p) => p.chave === painel)?.rotulo || "";
+  const rotuloEscopo =
+    painel === "area_beneficiada"
+      ? ESCOPOS_AREA_BENEFICIADA.find((e) => e.chave === escopoAreaBeneficiada)?.rotulo
+      : painel === "garantias"
+        ? `${TIPOS_GARANTIA.find((t) => t.chave === tipoGarantia)?.rotulo} · ${ESCOPOS_GARANTIA.find((e) => e.chave === escopoGarantia)?.rotulo}`
+        : "";
+  const tituloPainel = rotuloEscopo ? `${rotuloPainel} (${rotuloEscopo})` : rotuloPainel;
+
   return (
-    <div className="administracao">
+    <main className="administracao" id="conteudo-principal" tabIndex={-1}>
       <header className="administracao-header">
         <h1>Administração de checklist</h1>
         <p>Crie, edite, reordene e exclua os itens que aparecem na operação — sem mexer em código.</p>
       </header>
 
-      <nav className="administracao-selecao">
+      <nav className="administracao-selecao" aria-label="Painéis de checklist">
         {PAINEIS.map((p) => (
-          <button key={p.chave} type="button" className={painel === p.chave ? "ativa" : ""} onClick={() => setPainel(p.chave)}>
+          <button
+            key={p.chave}
+            type="button"
+            className={`btn${painel === p.chave ? " ativa" : ""}`}
+            aria-current={painel === p.chave ? "page" : undefined}
+            onClick={() => setPainel(p.chave)}
+          >
             {p.rotulo}
           </button>
         ))}
 
         {painel === "area_beneficiada" && (
-          <select value={escopoAreaBeneficiada} onChange={(e) => setEscopoAreaBeneficiada(e.target.value)}>
+          <select
+            aria-label="Escopo da área beneficiada"
+            value={escopoAreaBeneficiada}
+            onChange={(e) => setEscopoAreaBeneficiada(e.target.value)}
+          >
             {ESCOPOS_AREA_BENEFICIADA.map((e) => (
               <option key={e.chave} value={e.chave}>
                 {e.rotulo}
@@ -83,14 +102,18 @@ export default function Administracao() {
 
         {painel === "garantias" && (
           <>
-            <select value={tipoGarantia} onChange={(e) => setTipoGarantia(e.target.value)}>
+            <select aria-label="Tipo de garantia" value={tipoGarantia} onChange={(e) => setTipoGarantia(e.target.value)}>
               {TIPOS_GARANTIA.map((t) => (
                 <option key={t.chave} value={t.chave}>
                   {t.rotulo}
                 </option>
               ))}
             </select>
-            <select value={escopoGarantia} onChange={(e) => setEscopoGarantia(e.target.value)}>
+            <select
+              aria-label="Escopo da garantia"
+              value={escopoGarantia}
+              onChange={(e) => setEscopoGarantia(e.target.value)}
+            >
               {ESCOPOS_GARANTIA.map((e) => (
                 <option key={e.chave} value={e.chave}>
                   {e.rotulo}
@@ -104,7 +127,7 @@ export default function Administracao() {
       {usaFonteLinha && (
         <div className="administracao-linhas-bloco">
           <label className="administracao-linhas-seletor">
-            <span>Gerenciar linhas da fonte:</span>
+            <span>Gerenciar modalidades da fonte:</span>
             <select value={fonteLinhas} onChange={(e) => setFonteLinhas(e.target.value)}>
               {PROGRAMAS.map((p) => (
                 <option key={p.chave} value={p.chave}>
@@ -117,7 +140,12 @@ export default function Administracao() {
         </div>
       )}
 
-      <AdminChecklist key={`${caminhoApi}-${linhasVersao}`} caminhoApi={caminhoApi} caminhoLeitura={caminhoLeitura} />
-    </div>
+      <AdminChecklist
+        key={`${caminhoApi}-${linhasVersao}`}
+        caminhoApi={caminhoApi}
+        caminhoLeitura={caminhoLeitura}
+        titulo={tituloPainel}
+      />
+    </main>
   );
 }

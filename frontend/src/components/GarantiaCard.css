@@ -1,104 +1,84 @@
 .garantia-card {
   border: 1px solid var(--color-border-soft);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
-  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .garantia-card-cabecalho {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
 .garantia-card-tipo {
   flex-shrink: 0;
   align-self: center;
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: #fff;
-  background: var(--color-ink-900);
-  border-radius: 8px;
-  padding: 5px 9px;
+  color: var(--active-fg);
+  background: var(--active-bg);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
 }
 
 .garantia-card-campos {
   flex: 1;
-  min-width: 220px;
+  min-width: 240px;
 }
 
 .garantia-card-cobertura {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 10.5px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--color-ink-700);
   justify-content: center;
 }
 
 .garantia-card-cobertura strong {
-  font-size: 15px;
+  font-size: var(--fs-lg);
   color: var(--color-ink-900);
 }
 
-.garantia-card-remover {
-  flex-shrink: 0;
-  border: none;
-  background: none;
-  color: #8d2b2b;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
+.garantia-card-cobertura small {
+  font-size: var(--fs-xs);
+  font-weight: 500;
 }
 
 .garantia-card-secao h4 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: var(--fs-sm);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   color: var(--color-ink-700);
 }
 
 .garantia-garantidor {
   border: 1px dashed var(--color-border-strong);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .garantia-garantidor-remover {
   align-self: flex-end;
-  border: none;
-  background: none;
-  color: #8d2b2b;
-  font-size: 10.5px;
-  font-weight: 700;
-  cursor: pointer;
 }
 
 .garantia-adicionar-garantidor {
-  border: 1px dashed var(--color-border-strong);
-  background: none;
-  border-radius: 10px;
-  padding: 7px 12px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--color-ink-700);
-  cursor: pointer;
   width: 100%;
-}
-
-.garantia-adicionar-garantidor:hover {
-  background: var(--color-sage-50);
+  border-style: dashed;
+  background: none;
+  color: var(--color-ink-700);
 }

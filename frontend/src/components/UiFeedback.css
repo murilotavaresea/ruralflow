@@ -1,0 +1,228 @@
+/* --- avisos (toasts) ------------------------------------------------------------------- */
+
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-4);
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(560px, calc(100vw - 24px));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 7px 10px 7px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  border-left: 4px solid var(--color-ink-700);
+  background: var(--surface);
+  color: var(--color-ink-900);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  box-shadow: 0 14px 34px var(--color-shadow-strong);
+  animation: toast-entrada 0.18s ease-out;
+}
+
+.toast-sucesso {
+  border-left-color: var(--color-ok);
+}
+
+.toast-erro {
+  border-left-color: var(--danger);
+}
+
+.toast-mensagem {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.toast-acao {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  color: var(--focus);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast-acao:hover {
+  background: var(--surface-muted);
+}
+
+.toast-fechar {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink-700);
+  cursor: pointer;
+}
+
+.toast-fechar:hover {
+  background: var(--surface-muted);
+}
+
+@keyframes toast-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- janela modal ---------------------------------------------------------------------- */
+
+.modal-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--surface-overlay);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100vh - 32px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-strong);
+  background: var(--surface);
+  color: var(--color-ink-900);
+  box-shadow: 0 24px 60px var(--color-shadow-strong);
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal-pequena {
+  max-width: 440px;
+}
+
+.modal-media {
+  max-width: 640px;
+}
+
+.modal-grande {
+  max-width: 900px;
+}
+
+.modal-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-2) 20px;
+}
+
+.modal-cabecalho h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+}
+
+.modal-corpo {
+  padding: var(--space-2) 20px var(--space-4);
+  overflow-y: auto;
+}
+
+.modal-mensagem {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--color-ink-700);
+}
+
+.modal-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) 20px var(--space-4);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.btn-perigo-solido {
+  border-color: transparent;
+  background: var(--danger);
+  color: var(--surface);
+}
+
+.btn-perigo-solido:hover:not(:disabled) {
+  background: var(--danger);
+  filter: brightness(1.08);
+}
+
+/* --- menu suspenso (botao + painel) ---------------------------------------------------- */
+
+.menu-suspenso {
+  position: relative;
+}
+
+.menu-suspenso-painel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  min-width: 260px;
+  max-width: min(380px, calc(100vw - 24px));
+  max-height: min(70vh, 460px);
+  overflow-y: auto;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  background: var(--surface);
+  box-shadow: 0 16px 40px var(--color-shadow-strong);
+}
+
+.menu-suspenso-painel[data-alinhamento="direita"] {
+  left: auto;
+  right: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-ink-900);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: var(--surface-muted);
+}
+
+.menu-separador {
+  height: 1px;
+  margin: var(--space-1) 0;
+  background: var(--color-border-soft);
+}

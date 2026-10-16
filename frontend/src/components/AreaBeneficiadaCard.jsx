@@ -1,5 +1,6 @@
 import ChecklistGrupo from "./ChecklistGrupo";
-import { formatarDocumento } from "../utils/cpfCnpj";
+import CampoDocumento from "./CampoDocumento";
+import CampoNumerico from "./CampoNumerico";
 import "./AreaBeneficiadaCard.css";
 
 export default function AreaBeneficiadaCard({
@@ -15,6 +16,9 @@ export default function AreaBeneficiadaCard({
 }) {
   const grupoImovel = checklistDef?.bem || [];
   const grupoProprietario = checklistDef?.proprietario || [];
+  const areaTotal = Number(imovel.areaTotal) || 0;
+  const areaBeneficiada = Number(imovel.areaBeneficiadaHa) || 0;
+  const areaExcede = areaTotal > 0 && areaBeneficiada > areaTotal;
 
   return (
     <div className="area-beneficiada-card">
@@ -42,20 +46,22 @@ export default function AreaBeneficiadaCard({
             <input type="text" value={imovel.nirfCib} onChange={(e) => onMudarCampo("nirfCib", e.target.value)} />
           </label>
           <label className="campo">
-            <span>Área total (ha)</span>
-            <input
-              type="number"
-              value={imovel.areaTotal}
-              onChange={(e) => onMudarCampo("areaTotal", e.target.value)}
+            <span>Área total</span>
+            <CampoNumerico
+              sufixo="ha"
+              valor={imovel.areaTotal}
+              onChange={(valor) => onMudarCampo("areaTotal", valor)}
             />
           </label>
           <label className="campo">
-            <span>Área beneficiada (ha)</span>
-            <input
-              type="number"
-              value={imovel.areaBeneficiadaHa}
-              onChange={(e) => onMudarCampo("areaBeneficiadaHa", e.target.value)}
+            <span>Área beneficiada</span>
+            <CampoNumerico
+              sufixo="ha"
+              valor={imovel.areaBeneficiadaHa}
+              onChange={(valor) => onMudarCampo("areaBeneficiadaHa", valor)}
+              aria-invalid={areaExcede}
             />
+            {areaExcede && <small className="campo-dica aviso">Maior que a área total do imóvel.</small>}
           </label>
           <label className="campo">
             <span>CAR</span>
@@ -66,7 +72,7 @@ export default function AreaBeneficiadaCard({
             <input type="text" value={imovel.municipio} onChange={(e) => onMudarCampo("municipio", e.target.value)} />
           </label>
         </div>
-        <button type="button" className="area-beneficiada-card-remover" onClick={onRemover}>
+        <button type="button" className="btn btn-pequeno btn-perigo" onClick={onRemover}>
           Remover imóvel
         </button>
       </div>
@@ -80,31 +86,25 @@ export default function AreaBeneficiadaCard({
 
       <section className="area-beneficiada-card-secao">
         <h4>Proprietários</h4>
-        {imovel.proprietarios.map((proprietario) => (
+        {imovel.proprietarios.map((proprietario, posicao) => (
           <div className="area-beneficiada-proprietario" key={proprietario.id}>
             <div className="grade-campos">
               <label className="campo">
-                <span>Nome</span>
+                <span>Nome do proprietário {imovel.proprietarios.length > 1 ? posicao + 1 : ""}</span>
                 <input
                   type="text"
                   value={proprietario.nome}
                   onChange={(e) => onMudarCampoProprietario(proprietario.id, "nome", e.target.value)}
                 />
               </label>
-              <label className="campo">
-                <span>CPF / CNPJ</span>
-                <input
-                  type="text"
-                  value={proprietario.documento}
-                  onChange={(e) =>
-                    onMudarCampoProprietario(proprietario.id, "documento", formatarDocumento(e.target.value))
-                  }
-                />
-              </label>
+              <CampoDocumento
+                valor={proprietario.documento}
+                onChange={(valor) => onMudarCampoProprietario(proprietario.id, "documento", valor)}
+              />
               {imovel.proprietarios.length > 1 && (
                 <button
                   type="button"
-                  className="area-beneficiada-proprietario-remover"
+                  className="btn btn-pequeno btn-perigo area-beneficiada-proprietario-remover"
                   onClick={() => onRemoverProprietario(proprietario.id)}
                 >
                   Remover proprietário
@@ -120,7 +120,7 @@ export default function AreaBeneficiadaCard({
             )}
           </div>
         ))}
-        <button type="button" className="area-beneficiada-adicionar-proprietario" onClick={onAdicionarProprietario}>
+        <button type="button" className="btn area-beneficiada-adicionar-proprietario" onClick={onAdicionarProprietario}>
           + Adicionar proprietário
         </button>
       </section>

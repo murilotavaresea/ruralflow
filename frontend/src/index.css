@@ -1,9 +1,42 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap");
-
+/* ------------------------------------------------------------------------------------------
+   Tokens de design. Tudo que muda entre tema claro e escuro mora aqui: os demais arquivos CSS
+   so referenciam variaveis, nunca cores soltas.
+   - Texto pequeno (labels, botoes de status) precisa de contraste >= 4,5:1 (WCAG AA); os pares
+     "-solid" / "-fg" abaixo foram escolhidos para isso nos dois temas.
+   - Escala tipografica: 12 / 13 / 14 / 16 / 20 px. Nada abaixo de 12px.
+   ------------------------------------------------------------------------------------------ */
 :root {
-  --font-base: "Manrope", sans-serif;
-  --font-heading: "Sora", sans-serif;
-  --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+  color-scheme: light dark;
+
+  --font-base: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Sora Variable", "Sora", "Manrope Variable", system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  /* Escala compacta (a mesma do layout original; piso de 11px em vez dos 9,5-10,5px de antes).
+     Para deixar tudo maior ou menor basta mexer aqui. */
+  --fs-xs: 11px;
+  --fs-sm: 11.5px;
+  --fs-md: 12.5px;
+  --fs-lg: 15px;
+  --fs-xl: 19px;
+
+  /* alturas dos controles no desktop; telas de toque ganham alvos maiores (pointer: coarse) */
+  --control-h: 30px;
+  --btn-h: 28px;
+  --btn-h-sm: 22px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* paleta base (tema claro) */
   --color-sage-50: #f4f7f1;
   --color-sage-100: #d0dccb;
   --color-clay-100: #d7c7be;
@@ -12,19 +45,148 @@
   --color-soil-700: #6d6168;
   --color-ink-900: #4e454b;
   --color-ink-700: #655b62;
-  --color-border-soft: rgba(109, 97, 104, 0.12);
-  --color-border-strong: rgba(109, 97, 104, 0.2);
+
+  --bg-glow: rgba(136, 195, 181, 0.12);
+  --bg-start: #f7faf6;
+  --bg-end: #edf3ee;
+
+  --surface: #ffffff;
+  --surface-card: rgba(255, 255, 255, 0.78);
+  --surface-muted: var(--color-sage-50);
+  --surface-overlay: rgba(40, 34, 38, 0.45);
+
+  --color-border-soft: rgba(109, 97, 104, 0.14);
+  --color-border-strong: rgba(109, 97, 104, 0.28);
   --color-shadow: rgba(86, 78, 84, 0.12);
-  --color-shadow-strong: rgba(86, 78, 84, 0.18);
+  --color-shadow-strong: rgba(86, 78, 84, 0.2);
+
+  /* aba/botao selecionado */
+  --active-bg: var(--color-ink-900);
+  --active-fg: #ffffff;
+
+  /* botao principal */
+  --accent-bg: linear-gradient(135deg, #88c3b5, #6faf9d);
+  --accent-fg: #1f3a33;
+  --accent-shadow: rgba(111, 175, 157, 0.28);
+
+  --focus: #2b7a69;
+  --danger: #8d2b2b;
+  --danger-soft: rgba(141, 43, 43, 0.08);
+
+  /* status do checklist: cor da borda/barra, fundo do botao ativo (+ texto) e texto sobre
+     fundo claro */
   --color-ok: #4f8f6d;
   --color-pendente: #c88a3a;
   --color-na: #9a9099;
+  --status-ok-solid: #2e7650;
+  --status-ok-fg: #ffffff;
+  --status-ok-soft: rgba(46, 118, 80, 0.1);
+  --status-ok-text: #2e7650;
+  --status-pendente-solid: #8f5200;
+  --status-pendente-fg: #ffffff;
+  --status-pendente-soft: rgba(200, 138, 58, 0.12);
+  --status-pendente-text: #8f5200;
+  --status-na-solid: #5f5860;
+  --status-na-fg: #ffffff;
+  --status-na-soft: rgba(154, 144, 153, 0.16);
+  --status-na-text: #5f5860;
+  --status-nao-avaliado: rgba(109, 97, 104, 0.22);
+}
+
+/* Tema escuro: automatico pelo sistema, a menos que o usuario tenha forcado o claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-sage-50: #252d32;
+    --color-ink-900: #e7ecea;
+    --color-ink-700: #a9b5b1;
+    --bg-glow: rgba(136, 195, 181, 0.07);
+    --bg-start: #12171a;
+    --bg-end: #181e21;
+    --surface: #1d2327;
+    --surface-card: rgba(29, 35, 39, 0.82);
+    --surface-muted: #252d32;
+    --surface-overlay: rgba(0, 0, 0, 0.62);
+    --color-border-soft: rgba(255, 255, 255, 0.1);
+    --color-border-strong: rgba(255, 255, 255, 0.22);
+    --color-shadow: rgba(0, 0, 0, 0.35);
+    --color-shadow-strong: rgba(0, 0, 0, 0.5);
+    --active-bg: #88c3b5;
+    --active-fg: #10231e;
+    --accent-bg: linear-gradient(135deg, #88c3b5, #6faf9d);
+    --accent-fg: #10231e;
+    --accent-shadow: rgba(0, 0, 0, 0.4);
+    --focus: #88c3b5;
+    --danger: #f0a3a3;
+    --danger-soft: rgba(240, 163, 163, 0.1);
+    --color-ok: #6cc496;
+    --color-pendente: #e3a64f;
+    --color-na: #a59ea6;
+    --status-ok-solid: #6cc496;
+    --status-ok-fg: #0b1f15;
+    --status-ok-soft: rgba(108, 196, 150, 0.14);
+    --status-ok-text: #6cc496;
+    --status-pendente-solid: #e3a64f;
+    --status-pendente-fg: #1f1300;
+    --status-pendente-soft: rgba(227, 166, 79, 0.14);
+    --status-pendente-text: #e3a64f;
+    --status-na-solid: #a59ea6;
+    --status-na-fg: #12100f;
+    --status-na-soft: rgba(165, 158, 166, 0.16);
+    --status-na-text: #a59ea6;
+    --status-nao-avaliado: rgba(255, 255, 255, 0.2);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-sage-50: #252d32;
+  --color-ink-900: #e7ecea;
+  --color-ink-700: #a9b5b1;
+  --bg-glow: rgba(136, 195, 181, 0.07);
+  --bg-start: #12171a;
+  --bg-end: #181e21;
+  --surface: #1d2327;
+  --surface-card: rgba(29, 35, 39, 0.82);
+  --surface-muted: #252d32;
+  --surface-overlay: rgba(0, 0, 0, 0.62);
+  --color-border-soft: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
+  --color-shadow: rgba(0, 0, 0, 0.35);
+  --color-shadow-strong: rgba(0, 0, 0, 0.5);
+  --active-bg: #88c3b5;
+  --active-fg: #10231e;
+  --accent-bg: linear-gradient(135deg, #88c3b5, #6faf9d);
+  --accent-fg: #10231e;
+  --accent-shadow: rgba(0, 0, 0, 0.4);
+  --focus: #88c3b5;
+  --danger: #f0a3a3;
+  --danger-soft: rgba(240, 163, 163, 0.1);
+  --color-ok: #6cc496;
+  --color-pendente: #e3a64f;
+  --color-na: #a59ea6;
+  --status-ok-solid: #6cc496;
+  --status-ok-fg: #0b1f15;
+  --status-ok-soft: rgba(108, 196, 150, 0.14);
+  --status-ok-text: #6cc496;
+  --status-pendente-solid: #e3a64f;
+  --status-pendente-fg: #1f1300;
+  --status-pendente-soft: rgba(227, 166, 79, 0.14);
+  --status-pendente-text: #e3a64f;
+  --status-na-solid: #a59ea6;
+  --status-na-fg: #12100f;
+  --status-na-soft: rgba(165, 158, 166, 0.16);
+  --status-na-text: #a59ea6;
+  --status-nao-avaliado: rgba(255, 255, 255, 0.2);
 }
 
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 *,
@@ -36,11 +198,14 @@ body,
 body {
   margin: 0;
   font-family: var(--font-base);
+  font-size: var(--fs-md);
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background:
-    radial-gradient(circle at top left, rgba(136, 195, 181, 0.12), transparent 28%),
-    linear-gradient(180deg, #f7faf6 0%, #edf3ee 100%);
+    radial-gradient(circle at top left, var(--bg-glow), transparent 28%),
+    linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  background-attachment: fixed;
   color: var(--color-ink-900);
 }
 
@@ -51,76 +216,358 @@ textarea {
   font: inherit;
 }
 
+button {
+  color: inherit;
+}
+
 code {
   font-family: var(--font-mono);
 }
 
 ::selection {
-  background: rgba(136, 195, 181, 0.28);
+  background: rgba(136, 195, 181, 0.35);
   color: var(--color-ink-900);
 }
 
-/* Campos de formulario compartilhados entre as secoes da operacao */
+/* --- acessibilidade -------------------------------------------------------------------- */
+
+/* Anel de foco visivel pra quem navega por teclado; so aparece quando faz sentido
+   (:focus-visible), nao a cada clique de mouse em botoes. */
+:where(button, a, summary, select, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pular-para-conteudo {
+  position: absolute;
+  left: var(--space-3);
+  top: -48px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--active-bg);
+  color: var(--active-fg);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pular-para-conteudo:focus {
+  top: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- formularios compartilhados -------------------------------------------------------- */
+
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 11.5px;
+  gap: 3px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--color-ink-900);
+  min-width: 0;
+}
+
+.campo > span:first-child,
+.campo-rotulo {
+  line-height: 1.3;
+}
+
+.campo.obrigatorio > span:first-child::after,
+.campo-rotulo.obrigatorio::after {
+  content: " *";
+  color: var(--danger);
 }
 
 .campo input,
 .campo select,
 .campo textarea {
   width: 100%;
-  padding: 6px 10px;
-  border: 1px solid var(--color-border-soft);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  min-height: var(--control-h);
+  padding: 4px 9px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 9px;
+  background: var(--surface);
   color: var(--color-ink-900);
-  font-size: 12.5px;
+  font-size: var(--fs-md);
   font-weight: 500;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: var(--color-ink-700);
+  opacity: 0.7;
+}
+
 .campo textarea {
   resize: vertical;
-  min-height: 56px;
+  min-height: 52px;
   font-family: var(--font-base);
 }
 
 .campo input:focus,
 .campo select:focus,
 .campo textarea:focus {
-  outline: none;
-  border-color: rgba(136, 195, 181, 0.54);
-  box-shadow: 0 0 0 2px rgba(136, 195, 181, 0.16);
+  border-color: var(--focus);
+}
+
+.campo input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+/* linha do rotulo com um status curto a direita (ex.: "✓ válido"), que nao aumenta a altura do campo */
+.campo-rotulo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 15px; /* altura fixa: o status nao pode mudar a altura da linha de campos */
+}
+
+.campo-rotulo-linha > label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.campo-status {
+  flex-shrink: 0;
+  line-height: 1.3;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-ink-700);
+}
+
+.campo-status.ok {
+  color: var(--status-ok-text);
+}
+
+.campo-status.erro {
+  color: var(--danger);
+}
+
+.campo-dica {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--color-ink-700);
+  line-height: 1.35;
+}
+
+.campo-dica.erro {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.campo-dica.ok {
+  color: var(--status-ok-text);
+  font-weight: 600;
+}
+
+.campo-dica.aviso {
+  color: var(--status-pendente-text);
+  font-weight: 600;
+}
+
+/* 9 campos do proponente = 3x3; com auto-fit sobrava um campo sozinho na ultima linha */
+.grade-campos.colunas-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grade-campos.colunas-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 760px) {
+  .grade-campos.colunas-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .grade-campos.colunas-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .grade-campos.colunas-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .grade-campos.colunas-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .grade-campos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px 14px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px 12px;
 }
+
+/* Secao dentro de um cartao de formulario (ex.: "Condicoes financeiras") */
+.form-secao {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.form-secao + .form-secao {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border-strong);
+}
+
+.form-secao > legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 6px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-700);
+}
+
+.form-secao > legend + * {
+  clear: both;
+}
+
+/* --- botoes compartilhados ------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--btn-h);
+  padding: 3px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--color-ink-900);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+/* :where() zera a especificidade do :hover pra qualquer botao "selecionado" (.ativa, .btn-primario...)
+   poder sobrescrever a cor de fundo sem brigar com ele. */
+.btn:where(:hover:not(:disabled)) {
+  background: var(--surface-muted);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primario {
+  border-color: transparent;
+  background: var(--accent-bg);
+  color: var(--accent-fg);
+  box-shadow: 0 8px 18px var(--accent-shadow);
+}
+
+.btn-primario:hover:not(:disabled) {
+  background: var(--accent-bg);
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.btn-perigo {
+  color: var(--danger);
+}
+
+.btn-fantasma {
+  border-color: transparent;
+  background: transparent;
+}
+
+.btn-pequeno {
+  min-height: var(--btn-h-sm);
+  padding: 1px 9px;
+  font-size: var(--fs-xs);
+}
+
+/* --- cartoes --------------------------------------------------------------------------- */
 
 .cartao {
   border: 1px solid var(--color-border-soft);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
-  padding: 16px 18px;
-  box-shadow: 0 10px 28px var(--color-shadow);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: 12px 16px;
+  box-shadow: 0 8px 22px var(--color-shadow);
 }
 
 .cartao h2 {
   margin: 0 0 3px;
   font-family: var(--font-heading);
-  font-size: 15.5px;
+  font-size: var(--fs-lg);
   color: var(--color-ink-900);
 }
 
 .cartao-descricao {
-  margin: 0 0 12px;
-  font-size: 11.5px;
+  margin: 0 0 8px;
+  font-size: var(--fs-sm);
   color: var(--color-ink-700);
+}
+
+/* --- impressao: so o conteudo, sem navegacao nem controles ----------------------------- */
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .nao-imprimir,
+  .app-barra,
+  .operacao-sidebar,
+  .contexto-operacao,
+  .operacao-cabecalho,
+  .navegacao-abas,
+  .toasts,
+  button,
+  .checklist-barra {
+    display: none !important;
+  }
+
+  .cartao {
+    box-shadow: none;
+    border-color: #999;
+    break-inside: avoid;
+  }
 }

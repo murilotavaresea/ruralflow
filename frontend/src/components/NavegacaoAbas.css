@@ -1,0 +1,6 @@
+.navegacao-abas {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}

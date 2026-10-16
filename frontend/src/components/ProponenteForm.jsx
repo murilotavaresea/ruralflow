@@ -1,43 +1,66 @@
 import ChecklistGrupo from "./ChecklistGrupo";
-import { formatarDocumento, detectarTipoDocumento } from "../utils/cpfCnpj";
+import CampoDocumento from "./CampoDocumento";
+import CampoNumerico from "./CampoNumerico";
 import "./ProponenteForm.css";
 
+const OPCOES_QRSA = ["Baixo", "Médio", "Alto"];
+
 export default function ProponenteForm({ proponente, checklistDef, onMudarCampo, onMudarChecklist }) {
-  const tipoDocumento = detectarTipoDocumento(proponente.documento);
+  // Operacoes antigas guardaram o QRSA como texto livre (ex.: "Medio"); mantemos esse valor
+  // como opcao extra em vez de apaga-lo ao trocar o campo por uma lista.
+  const qrsaForaDaLista = proponente.qrsa && !OPCOES_QRSA.includes(proponente.qrsa);
 
   return (
     <div className="proponente-form">
       <div className="cartao">
         <h2>Proponente</h2>
         <p className="cartao-descricao">
-          Dados cadastrais e classificacao de risco do tomador do credito.
+          Dados cadastrais e classificação de risco do tomador do crédito. Campos com * são obrigatórios
+          para fechar o parecer.
         </p>
-        <div className="grade-campos">
-          <label className="campo">
-            <span>Nome / Razao social</span>
+
+        {/* um grid so, como no layout original: 9 campos nao precisam de tres secoes empilhadas */}
+        <div className="grade-campos colunas-3">
+          <label className="campo obrigatorio">
+            <span>Nome / Razão social</span>
             <input
               type="text"
               value={proponente.nome}
               onChange={(e) => onMudarCampo("nome", e.target.value)}
-              placeholder="Nome completo ou razao social"
+              placeholder="Nome completo ou razão social"
+              autoComplete="off"
             />
           </label>
+          <CampoDocumento
+            obrigatorio
+            valor={proponente.documento}
+            onChange={(valor) => onMudarCampo("documento", valor)}
+          />
           <label className="campo">
-            <span>CPF / CNPJ {tipoDocumento && `(${tipoDocumento})`}</span>
-            <input
-              type="text"
-              value={proponente.documento}
-              onChange={(e) => onMudarCampo("documento", formatarDocumento(e.target.value))}
-              placeholder="000.000.000-00"
-            />
-          </label>
-          <label className="campo">
-            <span>Setor de atuacao</span>
+            <span>Setor de atuação</span>
             <input
               type="text"
               value={proponente.setorAtuacao}
               onChange={(e) => onMudarCampo("setorAtuacao", e.target.value)}
-              placeholder="Ex: pecuaria de corte"
+              placeholder="Ex.: pecuária de corte"
+            />
+          </label>
+          <label className="campo">
+            <span>Renda anual</span>
+            <CampoNumerico
+              prefixo="R$"
+              valor={proponente.rendaAnual}
+              onChange={(valor) => onMudarCampo("rendaAnual", valor)}
+              placeholder="0,00"
+            />
+          </label>
+          <label className="campo">
+            <span>Patrimônio avaliado</span>
+            <CampoNumerico
+              prefixo="R$"
+              valor={proponente.patrimonioAvaliado}
+              onChange={(valor) => onMudarCampo("patrimonioAvaliado", valor)}
+              placeholder="0,00"
             />
           </label>
           <label className="campo">
@@ -46,51 +69,28 @@ export default function ProponenteForm({ proponente, checklistDef, onMudarCampo,
               type="text"
               value={proponente.risco}
               onChange={(e) => onMudarCampo("risco", e.target.value)}
-              placeholder="Ex: R5"
+              placeholder="Ex.: R5"
             />
           </label>
           <label className="campo">
             <span>PD</span>
-            <input
-              type="text"
-              value={proponente.pd}
-              onChange={(e) => onMudarCampo("pd", e.target.value)}
-            />
+            <input type="text" value={proponente.pd} onChange={(e) => onMudarCampo("pd", e.target.value)} />
           </label>
           <label className="campo">
             <span>QRSA</span>
-            <input
-              type="text"
-              value={proponente.qrsa}
-              onChange={(e) => onMudarCampo("qrsa", e.target.value)}
-              placeholder="Baixo / Medio / Alto"
-            />
+            <select value={proponente.qrsa} onChange={(e) => onMudarCampo("qrsa", e.target.value)}>
+              <option value="">Selecione</option>
+              {OPCOES_QRSA.map((opcao) => (
+                <option key={opcao} value={opcao}>
+                  {opcao}
+                </option>
+              ))}
+              {qrsaForaDaLista && <option value={proponente.qrsa}>{proponente.qrsa}</option>}
+            </select>
           </label>
           <label className="campo">
             <span>Score</span>
-            <input
-              type="text"
-              value={proponente.score}
-              onChange={(e) => onMudarCampo("score", e.target.value)}
-            />
-          </label>
-          <label className="campo">
-            <span>Renda anual (R$)</span>
-            <input
-              type="number"
-              value={proponente.rendaAnual}
-              onChange={(e) => onMudarCampo("rendaAnual", e.target.value)}
-              placeholder="0,00"
-            />
-          </label>
-          <label className="campo">
-            <span>Patrimonio avaliado (R$)</span>
-            <input
-              type="number"
-              value={proponente.patrimonioAvaliado}
-              onChange={(e) => onMudarCampo("patrimonioAvaliado", e.target.value)}
-              placeholder="0,00"
-            />
+            <input type="text" value={proponente.score} onChange={(e) => onMudarCampo("score", e.target.value)} />
           </label>
         </div>
       </div>
@@ -98,13 +98,13 @@ export default function ProponenteForm({ proponente, checklistDef, onMudarCampo,
       <div className="cartao">
         <h2>Checklist de compliance</h2>
         <p className="cartao-descricao">
-          Verificacoes obrigatorias do proponente, independente do programa de credito.
+          Verificações do proponente para a fonte de recurso e a modalidade escolhidas na aba Proposta.
         </p>
-        <ChecklistGrupo
-          grupos={checklistDef}
-          estado={proponente.checklist}
-          onMudarItem={onMudarChecklist}
-        />
+        {checklistDef.length > 0 ? (
+          <ChecklistGrupo grupos={checklistDef} estado={proponente.checklist} onMudarItem={onMudarChecklist} />
+        ) : (
+          <p className="cartao-descricao">Nenhum item de compliance cadastrado para esta combinação ainda.</p>
+        )}
       </div>
     </div>
   );

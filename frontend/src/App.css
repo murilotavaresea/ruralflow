@@ -1,24 +1,81 @@
-.app-nav {
+.app-barra {
   display: flex;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 20px 0;
 }
 
-.app-nav button {
+.app-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 8px 3px 3px;
   border: none;
+  border-radius: var(--radius-md);
   background: none;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--color-ink-700);
+  text-align: left;
   cursor: pointer;
 }
 
-.app-nav button.ativa {
-  background: var(--color-ink-900);
-  color: #fff;
+.app-marca:hover {
+  background: var(--surface-muted);
+}
+
+.app-logo {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--accent-bg);
+  color: var(--accent-fg);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+}
+
+.app-marca-texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.app-marca-texto strong {
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  color: var(--color-ink-900);
+}
+
+.app-marca-texto small {
+  font-size: var(--fs-xs);
+  color: var(--color-ink-700);
+}
+
+.app-barra-acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app-admin.ativa {
+  background: var(--surface-muted);
+  border-color: var(--color-border-strong);
+}
+
+.tema-toggle {
+  gap: 6px;
+}
+
+@media (max-width: 640px) {
+  .app-barra {
+    padding: var(--space-2) 12px 0;
+  }
+
+  .app-marca-texto small,
+  .tema-toggle-texto {
+    display: none;
+  }
 }

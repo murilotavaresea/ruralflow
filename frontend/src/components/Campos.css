@@ -1,0 +1,204 @@
+/* --- campo numerico (R$, %, ha...) ------------------------------------------------------ */
+
+.campo-numerico {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-numerico input {
+  font-variant-numeric: tabular-nums;
+}
+
+.campo-numerico.com-prefixo input {
+  padding-left: 36px;
+}
+
+.campo-numerico.com-sufixo input {
+  padding-right: 52px;
+}
+
+.campo-numerico-prefixo,
+.campo-numerico-sufixo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-ink-700);
+  pointer-events: none;
+}
+
+.campo-numerico-prefixo {
+  left: 10px;
+}
+
+.campo-numerico-sufixo {
+  right: 10px;
+}
+
+/* --- autocomplete (combobox) ----------------------------------------------------------- */
+
+.autocomplete {
+  position: relative;
+}
+
+.autocomplete-lista {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  max-height: 260px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  background: var(--surface);
+  box-shadow: 0 14px 34px var(--color-shadow-strong);
+}
+
+.autocomplete-lista li {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-ink-900);
+  cursor: pointer;
+}
+
+.autocomplete-lista li small {
+  font-size: var(--fs-xs);
+  color: var(--color-ink-700);
+}
+
+.autocomplete-lista li.ativa,
+.autocomplete-lista li:hover {
+  background: var(--surface-muted);
+}
+
+.autocomplete-lista li.ativa {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.autocomplete-lista mark {
+  background: rgba(136, 195, 181, 0.35);
+  color: inherit;
+  font-weight: 800;
+  border-radius: 3px;
+}
+
+/* --- chips (filtros, selecao de fontes/linhas) ------------------------------------------ */
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 2px 10px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--color-ink-700);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  background: var(--surface-muted);
+}
+
+.chip.selecionado,
+.chip:has(input:checked) {
+  border-color: var(--active-bg);
+  background: var(--active-bg);
+  color: var(--active-fg);
+}
+
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.chip:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.chip-contador {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-soft);
+  font-size: 10.5px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.chip.selecionado .chip-contador,
+.chip:has(input:checked) .chip-contador {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* --- estado vazio ---------------------------------------------------------------------- */
+
+.estado-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  text-align: center;
+}
+
+.estado-vazio-icone {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-border-strong);
+  font-size: 18px;
+  color: var(--color-ink-700);
+}
+
+.estado-vazio h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+}
+
+.estado-vazio p {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--fs-sm);
+  color: var(--color-ink-700);
+}
+
+.estado-vazio-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}

@@ -1,8 +1,17 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { buscarMunicipios, classificarPorte, buscarPrazoPorEmpreendimento } from "../utils/enquadramentoFno";
+import Autocomplete from "./Autocomplete";
+import CampoNumerico from "./CampoNumerico";
 import "./EnquadramentoFno.css";
 
-const TIPOS_EMPREENDIMENTO = ["Caminhonete", "Agricola Fixo", "Pecuario Fixo", "Agricola Semifixo", "Pecuario Semifixo"];
+// O valor (chave) tem que bater com o `tipo` de /referencia/fno-regras; so o rotulo muda.
+const TIPOS_EMPREENDIMENTO = [
+  { valor: "Caminhonete", rotulo: "Caminhonete" },
+  { valor: "Agricola Fixo", rotulo: "Agrícola fixo" },
+  { valor: "Pecuario Fixo", rotulo: "Pecuário fixo" },
+  { valor: "Agricola Semifixo", rotulo: "Agrícola semifixo" },
+  { valor: "Pecuario Semifixo", rotulo: "Pecuário semifixo" },
+];
 
 export default function EnquadramentoFno({
   proposta,
@@ -11,10 +20,14 @@ export default function EnquadramentoFno({
   fnoRegras,
   onMudarCampo,
 }) {
-  const [buscaAberta, setBuscaAberta] = useState(false);
   const sugestoes = useMemo(
-    () => (buscaAberta ? buscarMunicipios(municipiosFno, proposta.municipio) : []),
-    [buscaAberta, proposta.municipio, municipiosFno]
+    () =>
+      buscarMunicipios(municipiosFno, proposta.municipio).map((m) => ({
+        id: String(m.codigo_ibge),
+        rotulo: m.municipio,
+        detalhe: m.uf,
+      })),
+    [proposta.municipio, municipiosFno]
   );
 
   const municipioSelecionado = useMemo(
@@ -33,36 +46,14 @@ export default function EnquadramentoFno({
       <h3>Enquadramento FNO</h3>
 
       <div className="grade-campos">
-        <label className="campo enquadramento-fno-busca">
-          <span>Municipio do empreendimento</span>
-          <input
-            type="text"
-            value={proposta.municipio}
-            onChange={(e) => {
-              onMudarCampo("municipio", e.target.value);
-              setBuscaAberta(true);
-            }}
-            onFocus={() => setBuscaAberta(true)}
-            onBlur={() => setTimeout(() => setBuscaAberta(false), 150)}
-            placeholder="Digite o nome do municipio"
-            autoComplete="off"
-          />
-          {sugestoes.length > 0 && (
-            <ul className="enquadramento-fno-sugestoes">
-              {sugestoes.map((m) => (
-                <li
-                  key={m.codigo_ibge}
-                  onMouseDown={() => {
-                    onMudarCampo("municipio", m.municipio);
-                    setBuscaAberta(false);
-                  }}
-                >
-                  {m.municipio} - {m.uf}
-                </li>
-              ))}
-            </ul>
-          )}
-        </label>
+        <Autocomplete
+          rotulo="Município do empreendimento"
+          valor={proposta.municipio}
+          onChangeTexto={(texto) => onMudarCampo("municipio", texto)}
+          sugestoes={sugestoes}
+          onSelecionar={(sugestao) => onMudarCampo("municipio", sugestao.rotulo)}
+          placeholder="Digite o nome do município"
+        />
 
         <label className="campo">
           <span>Tipo de empreendimento</span>
@@ -72,20 +63,20 @@ export default function EnquadramentoFno({
           >
             <option value="">Selecione</option>
             {TIPOS_EMPREENDIMENTO.map((tipo) => (
-              <option key={tipo} value={tipo}>
-                {tipo}
+              <option key={tipo.valor} value={tipo.valor}>
+                {tipo.rotulo}
               </option>
             ))}
           </select>
         </label>
 
         <label className="campo">
-          <span>Limite financiavel (R$)</span>
-          <input
-            type="number"
-            value={proposta.limiteFinanciavelManual}
-            onChange={(e) => onMudarCampo("limiteFinanciavelManual", e.target.value)}
-            placeholder="Consultar Programacao FNO, pag. 23"
+          <span>Limite financiável</span>
+          <CampoNumerico
+            prefixo="R$"
+            valor={proposta.limiteFinanciavelManual}
+            onChange={(valor) => onMudarCampo("limiteFinanciavelManual", valor)}
+            placeholder="Consultar Programação FNO, pág. 23"
           />
         </label>
       </div>
@@ -97,7 +88,7 @@ export default function EnquadramentoFno({
             <dd>{municipioSelecionado.uf}</dd>
           </div>
           <div>
-            <dt>Microrregiao</dt>
+            <dt>Microrregião</dt>
             <dd>{municipioSelecionado.microrregiao}</dd>
           </div>
           <div>
@@ -106,16 +97,18 @@ export default function EnquadramentoFno({
           </div>
           <div>
             <dt>Faixa de fronteira</dt>
-            <dd>{municipioSelecionado.faixa_fronteira ? "Sim" : "Nao"}</dd>
+            <dd>{municipioSelecionado.faixa_fronteira ? "Sim" : "Não"}</dd>
           </div>
           <div>
-            <dt>Area de atuacao Sicoob</dt>
-            <dd>{municipioSelecionado.area_atuacao_sicoob ? "Sim" : "Nao"}</dd>
+            <dt>Área de atuação Sicoob</dt>
+            <dd>{municipioSelecionado.area_atuacao_sicoob ? "Sim" : "Não"}</dd>
           </div>
         </dl>
       ) : (
         proposta.municipio && (
-          <p className="enquadramento-fno-aviso">Municipio nao encontrado na base do FNO.</p>
+          <p className="enquadramento-fno-aviso" role="status">
+            Município não encontrado na base do FNO.
+          </p>
         )
       )}
 
@@ -127,8 +120,8 @@ export default function EnquadramentoFno({
 
       {proposta.tipoEmpreendimento && (
         <p className="enquadramento-fno-porte">
-          Prazo de referencia:{" "}
-          <strong>{prazoEmpreendimento?.prazo || "nao definido na programacao para este tipo"}</strong>
+          Prazo de referência:{" "}
+          <strong>{prazoEmpreendimento?.prazo || "não definido na programação para este tipo"}</strong>
         </p>
       )}
     </div>

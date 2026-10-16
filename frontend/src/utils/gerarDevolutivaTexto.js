@@ -1,4 +1,5 @@
 import { rotuloTipoGarantia } from "./garantiaModel";
+import { rotuloPrograma } from "./operacaoModel";
 import { filtrarGruposPorFonteELinha } from "./linhaModel";
 
 function linhasPendentes(grupos, estado) {
@@ -37,7 +38,7 @@ export default function gerarDevolutivaTexto(operacao, checklistDefs) {
       estado: operacao.proponente.checklist,
     },
     {
-      titulo: `Demais documentos (${operacao.proposta.programa})`,
+      titulo: `Demais documentos (${rotuloPrograma(operacao.proposta.programa)})`,
       grupos: filtrarGruposPorFonteELinha(
         checklistDefs.documentos,
         operacao.proposta.programa,
@@ -99,8 +100,8 @@ export default function gerarDevolutivaTexto(operacao, checklistDefs) {
   });
 
   if (blocos.length === 0) {
-    return "Nenhuma pendencia marcada para devolutiva no momento.";
+    return "Nenhuma pendência marcada para devolutiva no momento.";
   }
 
-  return ["DEVOLUTIVA - PENDENCIAS PARA REGULARIZACAO", "", ...blocos].join("\n\n");
+  return ["DEVOLUTIVA - PENDÊNCIAS PARA REGULARIZAÇÃO", "", ...blocos].join("\n\n");
 }

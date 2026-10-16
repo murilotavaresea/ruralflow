@@ -1,27 +1,49 @@
 .barra-progresso {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .barra-progresso-rotulo {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--color-ink-700);
 }
 
 .barra-progresso-trilha {
+  display: flex;
   height: 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-border-soft);
   overflow: hidden;
 }
 
-.barra-progresso-preenchimento {
+.barra-progresso-trilha.fina {
+  height: 6px;
+}
+
+.barra-progresso-segmento {
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #88c3b5, #6faf9d);
+  min-width: 3px;
   transition: width 0.3s ease;
+}
+
+.barra-progresso-segmento.ok {
+  background: var(--color-ok);
+}
+
+.barra-progresso-segmento.na {
+  background: var(--color-na);
+  opacity: 0.75;
+}
+
+.barra-progresso-segmento.pendente {
+  background: var(--color-pendente);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-pendente) 0 4px,
+    color-mix(in srgb, var(--color-pendente) 55%, var(--surface)) 4px 8px
+  );
 }

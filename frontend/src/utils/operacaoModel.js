@@ -14,9 +14,21 @@ export const PROGRAMAS = [
 
 export const PERIODICIDADES = ["Anual", "Semestral", "Trimestral", "Mensal"];
 
+export function rotuloPrograma(chave) {
+  return PROGRAMAS.find((p) => p.chave === chave)?.rotulo || chave || "";
+}
+
+export function novoIdOperacao() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `op_${crypto.randomUUID()}`;
+  }
+  return `op_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export function criarOperacaoVazia() {
   const agora = new Date().toISOString();
   return {
+    id: novoIdOperacao(),
     versao: 1,
     criadoEm: agora,
     atualizadoEm: agora,
@@ -68,6 +80,38 @@ export function novoAvalista() {
   return { nome: "", rendaBruta: "", despesasPercentual: "" };
 }
 
+// Uma operacao "em branco" nao precisa ocupar lugar na lista de operacoes salvas: so o que o
+// analista de fato preencheu conta. Serve pra "Nova operacao" nao deixar um rastro de
+// operacoes vazias cada vez que e clicado.
+export function operacaoEstaVazia(operacao) {
+  if (!operacao) return true;
+  const { proponente = {}, proposta = {} } = operacao;
+  const camposTexto = [
+    proponente.nome,
+    proponente.documento,
+    proponente.setorAtuacao,
+    proponente.risco,
+    proponente.pd,
+    proponente.qrsa,
+    proponente.score,
+    proponente.rendaAnual,
+    proponente.patrimonioAvaliado,
+    proposta.linhaCreditoDescricao,
+    proposta.finalidade,
+    proposta.valorOperacao,
+    proposta.prazoMeses,
+    proposta.carenciaMeses,
+    proposta.taxaAnual,
+    proposta.tipoCedula,
+    proposta.municipio,
+  ];
+  if (camposTexto.some((valor) => String(valor ?? "").trim() !== "")) return false;
+  if ((operacao.garantias || []).length > 0 || (operacao.areaBeneficiada || []).length > 0) return false;
+  if (Object.keys(proponente.checklist || {}).length > 0) return false;
+  if (Object.keys(operacao.checklistDocumental || {}).length > 0) return false;
+  return true;
+}
+
 // Preenche com os valores padrao qualquer campo que uma operacao salva antes de uma
 // funcionalidade nova (ex: localStorage de uma versao anterior do app, ou um .json
 // exportado antigo) nao tenha — sem isso, abrir uma operacao salva antes do modulo de
@@ -106,13 +150,51 @@ function normalizarChecklistDocumental(checklistDocumental) {
   return achatado;
 }
 
+const comoLista = (valor) => (Array.isArray(valor) ? valor : []);
+const comoObjeto = (valor) => (valor && typeof valor === "object" && !Array.isArray(valor) ? valor : {});
+
+// Garantias/imoveis importados de um .json antigo (ou editado a mao) podem vir sem
+// checklist ou sem a lista de garantidores/proprietarios; telas e PDF assumem que existem.
+// campos de um grau da matricula (garantias salvas antes da analise de matricula nao os tem)
+const GRAU_PADRAO = { registro: "", grau: "", valor: "", vencimento: "", contrato: "", status: "" };
+
+function normalizarGarantia(garantia) {
+  return {
+    ...garantia,
+    nomeImovel: garantia?.nomeImovel ?? "",
+    matricula: garantia?.matricula ?? "",
+    ccir: garantia?.ccir ?? "",
+    nirfCib: garantia?.nirfCib ?? "",
+    areaTotal: garantia?.areaTotal ?? "",
+    car: garantia?.car ?? "",
+    municipio: garantia?.municipio ?? "",
+    outraProposta: garantia?.outraProposta ?? "",
+    graus: comoLista(garantia?.graus).map((g, indice) => ({ id: `grau_migrado_${indice}`, ...GRAU_PADRAO, ...g })),
+    checklist: comoObjeto(garantia?.checklist),
+    garantidores: comoLista(garantia?.garantidores).map((g) => ({ ...g, checklist: comoObjeto(g?.checklist) })),
+  };
+}
+
+function normalizarImovel(imovel) {
+  return {
+    ...imovel,
+    checklist: comoObjeto(imovel?.checklist),
+    proprietarios: comoLista(imovel?.proprietarios).map((p) => ({ ...p, checklist: comoObjeto(p?.checklist) })),
+  };
+}
+
 export function normalizarOperacao(operacao) {
   const vazia = criarOperacaoVazia();
-  if (!operacao) return vazia;
+  if (!operacao || typeof operacao !== "object" || Array.isArray(operacao)) return vazia;
   return {
     ...vazia,
     ...operacao,
-    proponente: { ...vazia.proponente, ...operacao.proponente },
+    id: operacao.id || vazia.id,
+    proponente: {
+      ...vazia.proponente,
+      ...operacao.proponente,
+      checklist: comoObjeto(operacao.proponente?.checklist),
+    },
     proposta: normalizarProposta(operacao.proposta, vazia.proposta),
     capacidadePagamento: {
       ...vazia.capacidadePagamento,
@@ -123,8 +205,8 @@ export function normalizarOperacao(operacao) {
       },
     },
     checklistDocumental: normalizarChecklistDocumental(operacao.checklistDocumental),
-    garantias: operacao.garantias || [],
-    areaBeneficiada: operacao.areaBeneficiada || [],
+    garantias: comoLista(operacao.garantias).map(normalizarGarantia),
+    areaBeneficiada: comoLista(operacao.areaBeneficiada).map(normalizarImovel),
   };
 }
 
@@ -137,14 +219,41 @@ export function novoEstadoItem() {
   return { status: "", observacao: "", devolutivaTexto: "", camposTexto: {} };
 }
 
-function contarStatusChecklist(itensStatus, totalItens) {
-  const valores = Object.values(itensStatus || {});
-  const ok = valores.filter((i) => i?.status === "ok").length;
-  const na = valores.filter((i) => i?.status === "na").length;
-  const pendente = valores.filter((i) => i?.status === "pendente").length;
-  const preenchidos = ok + na + pendente;
-  const percentual = totalItens > 0 ? Math.round((preenchidos / totalItens) * 100) : 0;
-  return { ok, na, pendente, totalItens, preenchidos, percentual };
+// --- contagem de progresso ------------------------------------------------------------
+//
+// Conta so os itens que estao de fato na lista (grupos ja filtrados por fonte/linha). O estado
+// guardado na operacao pode ter marcacoes de itens que nao aparecem mais (ex: o analista
+// trocou a fonte de recurso); contar essas fazia o progresso passar de 100%.
+
+export function contarItens(grupos, estado) {
+  const contagem = { ok: 0, na: 0, pendente: 0, naoAvaliados: 0, totalItens: 0 };
+  (grupos || []).forEach((grupo) => {
+    (grupo.itens || []).forEach((item) => {
+      contagem.totalItens += 1;
+      const status = estado?.[item.chave]?.status;
+      if (status === "ok") contagem.ok += 1;
+      else if (status === "na") contagem.na += 1;
+      else if (status === "pendente") contagem.pendente += 1;
+      else contagem.naoAvaliados += 1;
+    });
+  });
+  const preenchidos = contagem.ok + contagem.na + contagem.pendente;
+  const percentual = contagem.totalItens > 0 ? Math.round((preenchidos / contagem.totalItens) * 100) : 0;
+  return { ...contagem, preenchidos, percentual };
+}
+
+function somarContagens(lista) {
+  const soma = { ok: 0, na: 0, pendente: 0, naoAvaliados: 0, totalItens: 0 };
+  lista.forEach((c) => {
+    soma.ok += c.ok;
+    soma.na += c.na;
+    soma.pendente += c.pendente;
+    soma.naoAvaliados += c.naoAvaliados;
+    soma.totalItens += c.totalItens;
+  });
+  const preenchidos = soma.ok + soma.na + soma.pendente;
+  const percentual = soma.totalItens > 0 ? Math.round((preenchidos / soma.totalItens) * 100) : 0;
+  return { ...soma, preenchidos, percentual };
 }
 
 export function progressoChecklistProponente(operacao, checklistProponenteDef) {
@@ -153,8 +262,7 @@ export function progressoChecklistProponente(operacao, checklistProponenteDef) {
     operacao.proposta.programa,
     operacao.proposta.linhaChecklist
   );
-  const totalItens = grupos.reduce((soma, grupo) => soma + grupo.itens.length, 0);
-  return contarStatusChecklist(operacao.proponente.checklist, totalItens);
+  return contarItens(grupos, operacao.proponente.checklist);
 }
 
 export function progressoChecklistDocumental(operacao, checklistDocumentosDef) {
@@ -163,33 +271,20 @@ export function progressoChecklistDocumental(operacao, checklistDocumentosDef) {
     operacao.proposta.programa,
     operacao.proposta.linhaChecklist
   );
-  const totalItens = grupos.reduce((soma, grupo) => soma + grupo.itens.length, 0);
-  return contarStatusChecklist(operacao.checklistDocumental, totalItens);
+  return contarItens(grupos, operacao.checklistDocumental);
 }
 
 // Soma o checklist do bem + de todos os garantidores de todas as garantias da operacao.
 export function progressoChecklistGarantias(operacao, checklistGarantiasDef) {
-  let totalItens = 0;
-  let preenchidos = 0;
-
+  const contagens = [];
   (operacao.garantias || []).forEach((garantia) => {
-    const def = checklistGarantiasDef[garantia.tipo] || { bem: [], proprietario: [] };
-
-    const totalBem = def.bem.reduce((soma, grupo) => soma + grupo.itens.length, 0);
-    const contagemBem = contarStatusChecklist(garantia.checklist, totalBem);
-    totalItens += contagemBem.totalItens;
-    preenchidos += contagemBem.preenchidos;
-
-    const totalGarantidor = def.proprietario.reduce((soma, grupo) => soma + grupo.itens.length, 0);
+    const def = checklistGarantiasDef?.[garantia.tipo] || { bem: [], proprietario: [] };
+    contagens.push(contarItens(def.bem, garantia.checklist));
     (garantia.garantidores || []).forEach((garantidor) => {
-      const contagemGarantidor = contarStatusChecklist(garantidor.checklist, totalGarantidor);
-      totalItens += contagemGarantidor.totalItens;
-      preenchidos += contagemGarantidor.preenchidos;
+      contagens.push(contarItens(def.proprietario, garantidor.checklist));
     });
   });
-
-  const percentual = totalItens > 0 ? Math.round((preenchidos / totalItens) * 100) : 0;
-  return { totalItens, preenchidos, percentual };
+  return somarContagens(contagens);
 }
 
 // Soma o checklist do imovel + de todos os proprietarios de todos os imoveis da operacao —
@@ -204,26 +299,14 @@ export function progressoChecklistAreaBeneficiada(operacao, checklistAreaBenefic
       operacao.proposta.linhaChecklist
     ),
   };
-  let totalItens = 0;
-  let preenchidos = 0;
-
-  const totalImovel = def.bem.reduce((soma, grupo) => soma + grupo.itens.length, 0);
-  const totalProprietario = def.proprietario.reduce((soma, grupo) => soma + grupo.itens.length, 0);
-
+  const contagens = [];
   (operacao.areaBeneficiada || []).forEach((imovel) => {
-    const contagemImovel = contarStatusChecklist(imovel.checklist, totalImovel);
-    totalItens += contagemImovel.totalItens;
-    preenchidos += contagemImovel.preenchidos;
-
+    contagens.push(contarItens(def.bem, imovel.checklist));
     (imovel.proprietarios || []).forEach((proprietario) => {
-      const contagemProprietario = contarStatusChecklist(proprietario.checklist, totalProprietario);
-      totalItens += contagemProprietario.totalItens;
-      preenchidos += contagemProprietario.preenchidos;
+      contagens.push(contarItens(def.proprietario, proprietario.checklist));
     });
   });
-
-  const percentual = totalItens > 0 ? Math.round((preenchidos / totalItens) * 100) : 0;
-  return { totalItens, preenchidos, percentual };
+  return somarContagens(contagens);
 }
 
 export function progressoGeral(
@@ -237,9 +320,6 @@ export function progressoGeral(
   const documentos = progressoChecklistDocumental(operacao, checklistDocumentosDef);
   const garantias = progressoChecklistGarantias(operacao, checklistGarantiasDef || {});
   const areaBeneficiada = progressoChecklistAreaBeneficiada(operacao, checklistAreaBeneficiadaDef);
-  const totalItens = proponente.totalItens + documentos.totalItens + garantias.totalItens + areaBeneficiada.totalItens;
-  const preenchidos =
-    proponente.preenchidos + documentos.preenchidos + garantias.preenchidos + areaBeneficiada.preenchidos;
-  const percentual = totalItens > 0 ? Math.round((preenchidos / totalItens) * 100) : 0;
-  return { totalItens, preenchidos, percentual, proponente, documentos, garantias, areaBeneficiada };
+  const total = somarContagens([proponente, documentos, garantias, areaBeneficiada]);
+  return { ...total, proponente, documentos, garantias, areaBeneficiada };
 }

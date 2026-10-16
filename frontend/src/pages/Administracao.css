@@ -1,22 +1,26 @@
 .administracao {
-  max-width: 780px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 20px 20px 56px;
+  padding: var(--space-3) 20px 56px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
+}
+
+.administracao:focus {
+  outline: none;
 }
 
 .administracao-header h1 {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 19px;
+  font-size: var(--fs-xl);
   color: var(--color-ink-900);
 }
 
 .administracao-header p {
   margin: 2px 0 0;
-  font-size: 11.5px;
+  font-size: var(--fs-sm);
   color: var(--color-ink-700);
 }
 
@@ -27,58 +31,40 @@
   flex-wrap: wrap;
 }
 
-.administracao-selecao button {
-  border: 1px solid var(--color-border-soft);
-  background: #fff;
-  color: var(--color-ink-700);
-  border-radius: 10px;
-  padding: 7px 13px;
-  font-size: 11.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .administracao-selecao button.ativa {
-  background: var(--color-ink-900);
-  border-color: var(--color-ink-900);
-  color: #fff;
+  background: var(--active-bg);
+  border-color: var(--active-bg);
+  color: var(--active-fg);
 }
 
-.administracao-selecao select {
-  border: 1px solid var(--color-border-soft);
-  border-radius: 10px;
-  padding: 7px 10px;
-  font-size: 11.5px;
+.administracao-selecao select,
+.administracao-linhas-seletor select {
+  min-height: var(--control-h);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 9px;
+  padding: 3px 9px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--color-ink-900);
-  background: #fff;
+  background: var(--surface);
 }
 
 .administracao-linhas-bloco {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 14px;
+  gap: var(--space-2);
+  padding: var(--space-3) 14px;
   border-radius: 14px;
-  background: var(--color-sage-50);
+  background: var(--surface-muted);
   border: 1px solid var(--color-border-soft);
 }
 
 .administracao-linhas-seletor {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11.5px;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--color-ink-700);
-}
-
-.administracao-linhas-seletor select {
-  border: 1px solid var(--color-border-soft);
-  border-radius: 8px;
-  padding: 5px 8px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--color-ink-900);
-  background: #fff;
 }
