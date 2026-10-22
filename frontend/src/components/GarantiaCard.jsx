@@ -64,7 +64,7 @@ export default function GarantiaCard({
             <span>{comAnaliseMatricula ? "Índice de garantia" : "Cobertura desta garantia"}</span>
             <strong>{formatarPercentual(indice)}</strong>
             {semValor && <small>O aval cobre toda a operação</small>}
-            {comAnaliseMatricula && <small>avaliação ÷ valor da operação</small>}
+            {comAnaliseMatricula && <small>avaliação ÷ (operação + graus em aberto)</small>}
           </div>
         </div>
         <button type="button" className="btn btn-pequeno btn-perigo" onClick={onRemover}>

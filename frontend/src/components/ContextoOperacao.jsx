@@ -22,7 +22,7 @@ function textoSalvamento(salvamento) {
 // checklists (OK / N.A. / Pendente / nao avaliado) e se o que foi digitado ja foi salvo. Fica
 // visivel enquanto o analista rola as listas longas.
 const ContextoOperacao = forwardRef(function ContextoOperacao(
-  { operacao, progresso, salvamento, dadosLocais, onIrParaAba },
+  { operacao, progresso, salvamento, dadosLocais, impedimentos = 0, onIrParaAba },
   ref
 ) {
   const { proponente, proposta } = operacao;
@@ -51,6 +51,16 @@ const ContextoOperacao = forwardRef(function ContextoOperacao(
         </div>
 
         <div className="contexto-lateral">
+          {impedimentos > 0 && (
+            <button
+              type="button"
+              className="contexto-selo-impedimento"
+              onClick={() => onIrParaAba("revisao")}
+              title="Há regras que impedem a contratação desta proposta. Clique para ver na Revisão."
+            >
+              {impedimentos} impedimento{impedimentos > 1 ? "s" : ""} à contratação
+            </button>
+          )}
           {dadosLocais && (
             <span
               className="contexto-selo-local"

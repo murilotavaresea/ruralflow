@@ -134,6 +134,38 @@ export function descreverAnaliseMatricula(garantia, valorOperacao) {
   return { resumo: `Matrícula ${matricula || "não informada"}: ${partes.join("; ")}.`, graus };
 }
 
+// Versao enxuta para o PARECER: so o que o analista leva para a deliberacao. Devolve
+// { matricula, graus }: o numero da matricula ("" se nao informado) e uma frase com os graus que
+// estao EM ABERTO ("" quando nao ha nenhum). O que esta zerado nao entra na frase. A cobertura
+// nao se repete aqui: a da garantia (indiceCoberturaGarantia) ja considera esses graus.
+// A analise completa continua em descreverAnaliseMatricula (PDF).
+export function descreverMatriculaParecer(garantia, valorOperacao) {
+  const resumo = resumirMatricula(garantia, valorOperacao);
+  // de quem e o grau: so Credisul, so outra IF ou os dois (com a contagem de cada)
+  const deQuem = (credisul, outra) => {
+    if (credisul > 0 && outra > 0) return ` (${credisul} Credisul, ${outra} ${outra > 1 ? "outras IFs" : "outra IF"})`;
+    return credisul > 0 ? " (Credisul)" : " (outra IF)";
+  };
+  const partes = [];
+  if (resumo.grausDeHipotecaAbertos > 0) {
+    const n = resumo.grausDeHipotecaAbertos;
+    partes.push(
+      `${n} ${n > 1 ? "graus" : "grau"} de hipoteca${deQuem(resumo.hipotecaCredisul.quantidade, resumo.hipotecaOutraIf.quantidade)}`
+    );
+  }
+  if (resumo.alienacoesAbertas > 0) {
+    const n = resumo.alienacoesAbertas;
+    partes.push(
+      `${n} ${n > 1 ? "alienações" : "alienação"}${deQuem(resumo.alienacaoCredisul.quantidade, resumo.alienacaoOutraIf.quantidade)}`
+    );
+  }
+  if (resumo.valorTomado > 0) partes.push(`valor tomado ${moedaBr(resumo.valorTomado)}`);
+  return {
+    matricula: String(garantia?.matricula || "").trim(),
+    graus: partes.length > 0 ? `Graus em aberto: ${partes.join("; ")}.` : "",
+  };
+}
+
 // Caracterizacao do imovel oferecido em garantia, em uma linha (parecer e PDF). A matricula fica de
 // fora porque ja abre a linha da analise dos graus. Devolve null se nada foi preenchido.
 export function descreverImovelGarantia(garantia) {

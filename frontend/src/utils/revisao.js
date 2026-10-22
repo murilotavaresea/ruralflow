@@ -14,6 +14,7 @@ import {
   tipoTemAnaliseMatricula,
 } from "./garantiaModel";
 import { resumirMatricula } from "./analiseMatricula";
+import { descreverCondicao } from "./regrasModel";
 
 const estaVazio = (valor) => String(valor ?? "").trim() === "";
 
@@ -75,7 +76,8 @@ function finalizarSecao(secao) {
 // Junta tudo que o analista precisa conferir antes de fechar a analise: campos em branco,
 // pontos de atencao, situacao de cada checklist (com os itens pendentes) e os numeros-chave
 // da operacao. Usado pela aba "Revisao" e pelo resumo do PDF.
-export function coletarRevisao(operacao, checklist) {
+// `resultadosRegras`: o que `avaliarRegras` (utils/regrasModel.js) devolveu para esta operacao.
+export function coletarRevisao(operacao, checklist, resultadosRegras = []) {
   const { proposta, proponente } = operacao;
   const filtrar = (grupos) => filtrarGruposPorFonteELinha(grupos || [], proposta.programa, proposta.linhaChecklist);
 
@@ -229,9 +231,54 @@ export function coletarRevisao(operacao, checklist) {
     });
   }
 
+  // --- regras do parecer ----------------------------------------------------------------
+  const acionadas = resultadosRegras
+    .filter((r) => r.estado === "acionada")
+    .map((r) => ({
+      id: r.regra.id,
+      nome: r.regra.nome,
+      condicao: descreverCondicao(r.regra),
+      encontrado: r.encontrado,
+      textoParecer: r.textoParecer,
+      textoDevolutiva: r.textoDevolutiva,
+      impede: Boolean(r.regra.impedeContratacao),
+      aba: r.campo.aba,
+    }));
+  const impedimentos = acionadas.filter((r) => r.impede);
+  const naoAvaliadas = resultadosRegras
+    .filter((r) => r.estado === "nao_avaliada")
+    .map((r) => ({ id: r.regra.id, nome: r.regra.nome, campo: r.campo.rotulo, aba: r.campo.aba }));
+  const invalidas = resultadosRegras.filter((r) => r.estado === "invalida").map((r) => ({ id: r.regra.id, nome: r.regra.nome }));
+
+  // impedimentos primeiro: sao o que o analista nao pode deixar passar
+  impedimentos.reverse().forEach((r) => {
+    avisos.unshift({
+      aba: r.aba,
+      impede: true,
+      texto: `A regra "${r.nome}" impede a contratação: ${r.condicao}${r.encontrado ? ` (informado: ${r.encontrado})` : ""}.`,
+    });
+  });
+  naoAvaliadas.forEach((r) => {
+    avisos.push({ aba: r.aba, texto: `Regra "${r.nome}" não avaliada: ${r.campo} não preenchido.` });
+  });
+  invalidas.forEach((r) => {
+    avisos.push({ aba: "revisao", texto: `A regra "${r.nome}" está com a configuração inválida; revise na Administração.` });
+  });
+  // Parecer editado a mao deixa de acompanhar os dados: uma regra que dispara depois nao entra sozinha.
+  if (operacao.parecerEditadoManualmente) {
+    const ausentes = acionadas.filter((r) => r.textoParecer && !String(operacao.parecerTexto || "").includes(r.textoParecer));
+    if (ausentes.length > 0) {
+      avisos.push({
+        aba: "parecer",
+        texto: `${ausentes.length} regra${ausentes.length > 1 ? "s acionadas não estão" : " acionada não está"} no texto do Parecer (editado manualmente).`,
+      });
+    }
+  }
+
   const camposFaltando = camposObrigatoriosFaltando(operacao);
 
   return {
+    regras: { acionadas, impedimentos: acionadas.filter((r) => r.impede), naoAvaliadas, invalidas },
     fonte: rotuloPrograma(proposta.programa),
     camposFaltando,
     avisos,
@@ -241,6 +288,7 @@ export function coletarRevisao(operacao, checklist) {
     resumo: {
       camposFaltando: camposFaltando.length,
       avisos: avisos.length,
+      impedimentos: impedimentos.length,
       pendencias: totais.pendente,
       naoAvaliados: totais.naoAvaliados,
       pronto: camposFaltando.length === 0 && totais.naoAvaliados === 0,

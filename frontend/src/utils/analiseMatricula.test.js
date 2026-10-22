@@ -1,5 +1,6 @@
 import {
   descreverAnaliseMatricula,
+  descreverMatriculaParecer,
   formatarDataBr,
   grauEstaAberto,
   resumirMatricula,
@@ -183,14 +184,93 @@ describe("descreverAnaliseMatricula (texto do parecer e do PDF)", () => {
     expect(descreverAnaliseMatricula(g, "100").graus[0]).toMatch(/situação não informada$/);
   });
 
-  test("parecer inclui a analise da matricula logo abaixo da garantia", () => {
+});
+
+describe("parecer: garantia de imovel so com o essencial", () => {
+  const capacidade = { beneficiario: { rendaLiquida: 0, indice: null } };
+  const parecer = (garantia, valorOperacao = "500000") => {
     const op = criarOperacaoVazia();
-    op.proposta.valorOperacao = "200000";
-    op.garantias = [hipoteca({ matricula: "999" })];
-    const texto = gerarParecerTexto(op, { beneficiario: { rendaLiquida: 0, indice: null } });
-    expect(texto).toMatch(/- Hipoteca: R\$\s600\.000,00/);
-    expect(texto).toContain("\n    Matrícula 999: graus de hipoteca em aberto: 2;");
-    expect(texto).toContain("\n      - 1º (registro R-1)");
+    op.proposta.valorOperacao = valorOperacao;
+    op.garantias = [garantia];
+    return gerarParecerTexto(op, capacidade);
+  };
+  const trecho = (texto) => texto.slice(texto.indexOf("Garantias:"), texto.indexOf("  Cobertura total"));
+
+  test("sem graus em aberto: uma linha com tipo, avaliacao, matricula e cobertura (nada zerado)", () => {
+    const texto = trecho(parecer({ ...novaGarantia("hipoteca"), valor: "1500000", matricula: "1111" }));
+    expect(texto).toMatch(/^Garantias:\n {2}- Hipoteca: avaliação de R\$\s1\.500\.000,00, matrícula 1111 \(cobertura de 300%\)\.\n$/);
+    expect(texto).not.toMatch(/em aberto|valor tomado|total do risco|grau desta operação|alienações/);
+  });
+
+  test("com graus em aberto: so o que esta em aberto, uma linha abaixo; cancelado e zerado ficam de fora", () => {
+    const g = {
+      ...novaGarantia("hipoteca"),
+      valor: "1500000",
+      matricula: "1111",
+      graus: [grau("aberto_credisul", 500000), grau("cancelado", 900000)],
+    };
+    const texto = trecho(parecer(g));
+    // a cobertura (150% = 1,5 mi / (500 mil + 500 mil)) ja considera o grau em aberto e aparece uma so vez
+    expect(texto).toMatch(/- Hipoteca: avaliação de R\$\s1\.500\.000,00, matrícula 1111 \(cobertura de 150%\)\.\n/);
+    expect(texto).toMatch(/\n {4}Graus em aberto: 1 grau de hipoteca \(Credisul\); valor tomado R\$\s500\.000,00\.\n/);
+    expect(texto).not.toMatch(/cobertura considerando/);
+    expect(texto).not.toMatch(/alienaç|cancelado|registro/i);
+  });
+
+  test("plural e alienacao aparecem so quando existem", () => {
+    const texto = trecho(parecer(hipoteca({ valor: "800000", matricula: "5" }), "200000"));
+    expect(texto).toContain("Graus em aberto: 2 graus de hipoteca (1 Credisul, 1 outra IF); 1 alienação (Credisul); valor tomado");
+  });
+
+  test("garantia de imovel sem matricula ou sem valor nao inventa nada", () => {
+    expect(trecho(parecer({ ...novaGarantia("hipoteca"), valor: "100000" }))).toMatch(
+      /- Hipoteca: avaliação de R\$\s100\.000,00 \(cobertura de 20%\)\.\n/
+    );
+    expect(trecho(parecer({ ...novaGarantia("hipoteca"), matricula: "7" }))).toContain(
+      "- Hipoteca: avaliação não informada, matrícula 7 (cobertura de 0%)."
+    );
+  });
+
+  test("garantidores continuam aparecendo no fim da linha", () => {
+    const g = { ...novaGarantia("hipoteca"), valor: "1000000", matricula: "9", garantidores: [{ id: "x", nome: "Maria Souza" }] };
+    expect(trecho(parecer(g))).toMatch(/matrícula 9 \(cobertura de 200%\), garantidor\(es\): Maria Souza\.\n/);
+  });
+
+  test("outras garantias (penhor, etc.) seguem como antes", () => {
+    expect(trecho(parecer({ ...novaGarantia("penhor_pecuario"), valor: "250000" }))).toMatch(
+      /- Penhor pecuário: R\$\s250\.000,00 \(cobertura de 50%\)\.\n/
+    );
+  });
+});
+
+describe("descreverMatriculaParecer", () => {
+  test("devolve matricula e frase vazia quando nada esta em aberto", () => {
+    expect(descreverMatriculaParecer({ ...novaGarantia("hipoteca"), matricula: " 12 ", valor: "1" }, "100")).toEqual({
+      matricula: "12",
+      graus: "",
+    });
+    expect(descreverMatriculaParecer({ ...novaGarantia("hipoteca"), graus: [grau("cancelado", 5)] }, "100").graus).toBe("");
+  });
+
+  test("grau em aberto sem valor informado conta, mas nao inventa valor tomado", () => {
+    const g = { ...novaGarantia("hipoteca"), valor: "1000", graus: [grau("aberto_outra_if", 0)] };
+    expect(descreverMatriculaParecer(g, "100").graus).toBe("Graus em aberto: 1 grau de hipoteca (outra IF).");
+  });
+
+  test("diz de quem e cada grau em aberto: Credisul, outra IF ou os dois, para hipoteca e para alienacao", () => {
+    const frase = (graus) => descreverMatriculaParecer({ ...novaGarantia("hipoteca"), valor: "1", graus }, "100").graus;
+    expect(frase([grau("aberto_credisul", 1), grau("aberto_credisul", 2)])).toMatch(
+      /^Graus em aberto: 2 graus de hipoteca \(Credisul\); valor tomado R\$\s3,00\.$/
+    );
+    expect(frase([grau("aberto_outra_if", 1)])).toMatch(/^Graus em aberto: 1 grau de hipoteca \(outra IF\)/);
+    expect(frase([grau("aberto_credisul", 1), grau("aberto_outra_if", 1), grau("aberto_outra_if", 1)])).toMatch(
+      /^Graus em aberto: 3 graus de hipoteca \(1 Credisul, 2 outras IFs\)/
+    );
+    expect(frase([grau("aberto_alienacao_outra_if", 1)])).toMatch(/^Graus em aberto: 1 alienação \(outra IF\)/);
+    expect(frase([grau("aberto_alienacao_credisul", 1), grau("aberto_alienacao_outra_if", 1)])).toMatch(
+      /^Graus em aberto: 2 alienações \(1 Credisul, 1 outra IF\)/
+    );
+    expect(frase([grau("aberto_credisul", 1), grau("cancelado", 5)])).not.toMatch(/outra IF/);
   });
 });
 

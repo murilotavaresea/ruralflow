@@ -380,11 +380,13 @@ function escreverGrupos(escritor, grupos, estado) {
 // Relatorio completo da operacao: pagina de resumo (numeros, situacao dos checklists, pontos de
 // atencao e pendencias), os checklists item a item e, por fim, o parecer. `checklist` e o objeto
 // `referencia.checklist` da tela (proponente, documentos, garantias, areaBeneficiada, linhas).
-export function gerarPdfOperacao(operacao, checklist) {
+// `resultadosRegras` (avaliarRegras) faz os impedimentos e avisos das regras do parecer entrarem
+// nos pontos de atencao, igual a aba Revisao.
+export function gerarPdfOperacao(operacao, checklist, resultadosRegras = []) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const escritor = criarEscritor(doc);
   const { proponente, proposta } = operacao;
-  const revisao = coletarRevisao(operacao, checklist);
+  const revisao = coletarRevisao(operacao, checklist, resultadosRegras);
   const filtrar = (grupos) => filtrarGruposPorFonteELinha(grupos || [], proposta.programa, proposta.linhaChecklist);
 
   desenharCabecalho(

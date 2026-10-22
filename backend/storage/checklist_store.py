@@ -13,6 +13,8 @@ padrao bem + proprietario/garantidor (Garantias ainda com a dimensao extra de ti
 
 import json
 import os
+import re
+import shutil
 import uuid
 from pathlib import Path
 from threading import Lock
@@ -27,6 +29,7 @@ from config.checklist_area_beneficiada import (
     CHECKLIST_AREA_BENEFICIADA_BEM,
     CHECKLIST_AREA_BENEFICIADA_PROPRIETARIO,
 )
+from config.regras_parecer import REGRAS_PADRAO
 
 PROGRAMAS_DOCUMENTAL = ("bndes", "fno", "fco", "controlado", "livre")
 _PROGRAMAS_ANTIGOS_FCO = ("fco_rural", "fco_empresarial")
@@ -35,7 +38,27 @@ _PROGRAMAS_ANTIGOS_FCO = ("fco_rural", "fco_empresarial")
 ESCOPOS_BEM_PROPRIETARIO = ("bem", "proprietario")
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-DATA_FILE = DATA_DIR / "checklist.json"
+_ARQUIVO_SEMENTE = DATA_DIR / "checklist.json"
+
+
+def _resolver_arquivo_de_dados():
+    """Onde o checklist fica gravado.
+
+    Por padrao e o proprio backend/data/checklist.json (como sempre foi). Se a variavel de
+    ambiente RURALFLOW_DATA_DIR apontar para uma pasta — em producao, um Volume da Railway —
+    o arquivo passa a viver la, fora do container, e sobrevive aos deploys. Na primeira vez
+    a pasta recebe uma copia do checklist.json do repositorio, entao nada comeca do zero."""
+    pasta = os.getenv("RURALFLOW_DATA_DIR", "").strip()
+    if not pasta:
+        return _ARQUIVO_SEMENTE
+    destino = Path(pasta) / "checklist.json"
+    if not destino.exists() and _ARQUIVO_SEMENTE.exists():
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(_ARQUIVO_SEMENTE, destino)
+    return destino
+
+
+DATA_FILE = _resolver_arquivo_de_dados()
 
 
 def _novo_id(prefixo):
@@ -150,10 +173,19 @@ def _semente():
         "garantias": garantias,
         "area_beneficiada": area_beneficiada,
         "linhas": linhas,
+        "regras": _regras_da_semente(),
     }
 
 
+def _regras_da_semente():
+    return [{"id": _novo_id("reg"), **regra} for regra in REGRAS_PADRAO]
+
+
 class SecaoInvalidaError(ValueError):
+    pass
+
+
+class ValorInvalidoError(ValueError):
     pass
 
 
@@ -204,6 +236,9 @@ class JsonChecklistStore:
             dados["area_beneficiada"] = _semente()["area_beneficiada"]
             alterado = True
         if self._completar_campo_fontes_dos_itens(dados):
+            alterado = True
+        if "regras" not in dados:
+            dados["regras"] = _regras_da_semente()
             alterado = True
         return alterado
 
@@ -358,6 +393,7 @@ class JsonChecklistStore:
                 "garantias": garantias_por_tipo,
                 "area_beneficiada": dados["area_beneficiada"],
                 "linhas": dados["linhas"],
+                "regras": dados["regras"],
             }
 
     # --- grupos -------------------------------------------------------------------
@@ -508,6 +544,140 @@ class JsonChecklistStore:
             linhas[:] = linhas_reordenadas + faltantes
             self._gravar(dados)
             return linhas
+
+
+    # --- regras do parecer ---------------------------------------------------------------
+
+    def criar_regra(self, regra_dados):
+        regra = {**_REGRA_PADRAO, **_regra_validada(regra_dados, parcial=False)}
+        with self._lock:
+            dados = self._carregar()
+            regra["id"] = _novo_id("reg")
+            dados["regras"].append(regra)
+            self._gravar(dados)
+            return regra
+
+    def atualizar_regra(self, regra_id, regra_dados):
+        mudancas = _regra_validada(regra_dados, parcial=True)
+        with self._lock:
+            dados = self._carregar()
+            for regra in dados["regras"]:
+                if regra["id"] == regra_id:
+                    regra.update(mudancas)
+                    self._gravar(dados)
+                    return regra
+            raise NaoEncontradoError(f"Regra nao encontrada: {regra_id}")
+
+    def excluir_regra(self, regra_id):
+        with self._lock:
+            dados = self._carregar()
+            restantes = [r for r in dados["regras"] if r["id"] != regra_id]
+            if len(restantes) == len(dados["regras"]):
+                raise NaoEncontradoError(f"Regra nao encontrada: {regra_id}")
+            dados["regras"] = restantes
+            self._gravar(dados)
+
+    def reordenar_regras(self, ordem):
+        if not isinstance(ordem, list) or not all(isinstance(i, str) for i in ordem):
+            raise ValorInvalidoError("A ordem das regras deve ser uma lista de ids.")
+        with self._lock:
+            dados = self._carregar()
+            indice = {r["id"]: r for r in dados["regras"]}
+            reordenadas = [indice[rid] for rid in ordem if rid in indice]
+            faltantes = [r for r in dados["regras"] if r["id"] not in ordem]
+            dados["regras"] = reordenadas + faltantes
+            self._gravar(dados)
+            return dados["regras"]
+
+
+# Operadores que a tela de Administracao oferece (a avaliacao em si e feita no frontend, onde esta
+# a operacao). Guardar so valores conhecidos evita que um corpo malformado quebre a tela de todos.
+OPERADORES_REGRA = (
+    "igual",
+    "diferente",
+    "maior",
+    "maior_igual",
+    "menor",
+    "menor_igual",
+    "um_de",
+    "preenchido",
+    "vazio",
+)
+_CHAVE_VALIDA = re.compile(r"^[a-z0-9_]{1,60}$")
+_TEXTO_MAXIMO = 2000
+
+_REGRA_PADRAO = {
+    "nome": "",
+    "ativa": True,
+    "campo": "",
+    "operador": "igual",
+    "valor": "",
+    "fontes": "todas",
+    "impedeContratacao": False,
+    "textoParecer": "",
+    "textoDevolutiva": "",
+}
+
+
+def _texto(dados, chave, maximo):
+    valor = dados[chave]
+    if isinstance(valor, (int, float)) and not isinstance(valor, bool):
+        valor = str(valor)
+    if not isinstance(valor, str):
+        raise ValorInvalidoError(f"O campo '{chave}' deve ser um texto.")
+    valor = valor.strip()
+    if len(valor) > maximo:
+        raise ValorInvalidoError(f"O campo '{chave}' passa de {maximo} caracteres.")
+    return valor
+
+
+def _regra_validada(dados, parcial):
+    """Aceita so os campos conhecidos, com o tipo certo. `parcial` (edicao) valida apenas o que veio."""
+    if not isinstance(dados, dict):
+        raise ValorInvalidoError("Corpo da requisicao invalido.")
+    limpos = {}
+
+    if "nome" in dados or not parcial:
+        nome = _texto({"nome": dados.get("nome", "")}, "nome", 120)
+        if not nome:
+            raise ValorInvalidoError("Nome da regra e obrigatorio.")
+        limpos["nome"] = nome
+
+    if "campo" in dados or not parcial:
+        campo = _texto({"campo": dados.get("campo", "")}, "campo", 60)
+        if not _CHAVE_VALIDA.match(campo):
+            raise ValorInvalidoError("Escolha o dado da operacao que aciona a regra.")
+        limpos["campo"] = campo
+
+    if "operador" in dados or not parcial:
+        operador = dados.get("operador", "")
+        if operador not in OPERADORES_REGRA:
+            raise ValorInvalidoError("Operador invalido.")
+        limpos["operador"] = operador
+
+    if "valor" in dados:
+        limpos["valor"] = _texto(dados, "valor", 300)
+
+    if "fontes" in dados:
+        fontes = dados["fontes"]
+        if fontes != "todas":
+            if not isinstance(fontes, list) or len(fontes) > 20 or not all(
+                isinstance(f, str) and _CHAVE_VALIDA.match(f) for f in fontes
+            ):
+                raise ValorInvalidoError("As fontes devem ser 'todas' ou uma lista de fontes.")
+        limpos["fontes"] = fontes
+
+    for chave in ("ativa", "impedeContratacao"):
+        if chave in dados:
+            if not isinstance(dados[chave], bool):
+                raise ValorInvalidoError(f"O campo '{chave}' deve ser verdadeiro ou falso.")
+            limpos[chave] = dados[chave]
+
+    for chave in ("textoParecer", "textoDevolutiva"):
+        if chave in dados:
+            limpos[chave] = _texto(dados, chave, _TEXTO_MAXIMO)
+
+    return limpos
 
 
 def _campos_validos(item_dados):

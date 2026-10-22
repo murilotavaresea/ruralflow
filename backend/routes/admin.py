@@ -1,6 +1,11 @@
 from flask import Blueprint, jsonify, request
 
-from storage.checklist_store import get_store, NaoEncontradoError, SecaoInvalidaError
+from storage.checklist_store import (
+    get_store,
+    NaoEncontradoError,
+    SecaoInvalidaError,
+    ValorInvalidoError,
+)
 
 admin_bp = Blueprint("admin_bp", __name__, url_prefix="/admin")
 
@@ -14,7 +19,7 @@ def _tratado(funcao, *args, **kwargs):
         return jsonify(funcao(*args, **kwargs))
     except NaoEncontradoError as erro:
         return jsonify({"erro": str(erro)}), 404
-    except SecaoInvalidaError as erro:
+    except (SecaoInvalidaError, ValorInvalidoError) as erro:
         return jsonify({"erro": str(erro)}), 400
 
 
@@ -272,6 +277,33 @@ def atualizar_linha(programa, linha_id):
 def excluir_linha(programa, linha_id):
     try:
         get_store().excluir_linha(programa, linha_id)
+        return jsonify({"ok": True})
+    except NaoEncontradoError as erro:
+        return jsonify({"erro": str(erro)}), 404
+
+
+# --- rotas: regras do parecer (condicao sobre um dado da operacao -> texto/impedimento) ---------
+
+@admin_bp.route("/regras", methods=["POST"])
+def criar_regra():
+    return _tratado(get_store().criar_regra, _corpo())
+
+
+@admin_bp.route("/regras/reordenar", methods=["PUT"])
+def reordenar_regras():
+    corpo = _corpo()
+    return _tratado(get_store().reordenar_regras, corpo.get("ordem") if isinstance(corpo, dict) else None)
+
+
+@admin_bp.route("/regras/<regra_id>", methods=["PUT"])
+def atualizar_regra(regra_id):
+    return _tratado(get_store().atualizar_regra, regra_id, _corpo())
+
+
+@admin_bp.route("/regras/<regra_id>", methods=["DELETE"])
+def excluir_regra(regra_id):
+    try:
+        get_store().excluir_regra(regra_id)
         return jsonify({"ok": True})
     except NaoEncontradoError as erro:
         return jsonify({"erro": str(erro)}), 404

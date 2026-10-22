@@ -12,6 +12,9 @@ function percentual(indice) {
 
 function resumoDoEstado(resumo) {
   const partes = [];
+  if (resumo.impedimentos > 0) {
+    partes.push(`${resumo.impedimentos} ${resumo.impedimentos > 1 ? "impedimentos" : "impedimento"} à contratação`);
+  }
   if (resumo.camposFaltando > 0) {
     partes.push(`${resumo.camposFaltando} campo${resumo.camposFaltando > 1 ? "s" : ""} obrigatório${resumo.camposFaltando > 1 ? "s" : ""} em branco`);
   }
@@ -27,10 +30,13 @@ function resumoDoEstado(resumo) {
 // Aba "Revisao": uma conferencia antes de gerar o parecer e a devolutiva — o que falta
 // preencher, os pontos de atencao, a situacao de cada checklist e os numeros-chave.
 export default function RevisaoPainel({ revisao, rotulosAbas, onIrParaAba }) {
-  const { resumo, numeros, camposFaltando, avisos, secoes } = revisao;
+  const { resumo, numeros, camposFaltando, avisos, secoes, regras } = revisao;
   const partes = resumoDoEstado(resumo);
-  const tom = resumo.pronto ? (resumo.pendencias > 0 ? "atencao" : "ok") : "atencao";
-  const titulo = resumo.pronto
+  const impedida = resumo.impedimentos > 0;
+  const tom = impedida ? "impedimento" : resumo.pronto ? (resumo.pendencias > 0 ? "atencao" : "ok") : "atencao";
+  const titulo = impedida
+    ? "Há impedimento à contratação segundo as regras do parecer"
+    : resumo.pronto
     ? resumo.pendencias > 0
       ? "Checklists completos, com pendências para devolver ao proponente"
       : "Tudo avaliado e sem pendências"
@@ -84,6 +90,14 @@ export default function RevisaoPainel({ revisao, rotulosAbas, onIrParaAba }) {
         <div className="cartao">
           <h3>Pontos de atenção</h3>
           <ul className="revisao-lista">
+            {avisos.filter((aviso) => aviso.impede).map((aviso) => (
+              <li key={aviso.texto} className="obrigatorio">
+                <span>{aviso.texto}</span>
+                <button type="button" className="btn btn-pequeno" onClick={() => onIrParaAba(aviso.aba)}>
+                  Ir para {rotulosAbas[aviso.aba]}
+                </button>
+              </li>
+            ))}
             {camposFaltando.map((campo) => (
               <li key={campo.campo} className="obrigatorio">
                 <span>
@@ -94,12 +108,45 @@ export default function RevisaoPainel({ revisao, rotulosAbas, onIrParaAba }) {
                 </button>
               </li>
             ))}
-            {avisos.map((aviso) => (
+            {avisos.filter((aviso) => !aviso.impede).map((aviso) => (
               <li key={aviso.texto}>
                 <span>{aviso.texto}</span>
                 <button type="button" className="btn btn-pequeno" onClick={() => onIrParaAba(aviso.aba)}>
                   Ir para {rotulosAbas[aviso.aba]}
                 </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {regras.acionadas.length > 0 && (
+        <div className="cartao">
+          <h3>Regras do parecer acionadas</h3>
+          <ul className="revisao-regras">
+            {regras.acionadas.map((regra) => (
+              <li key={regra.id} className={regra.impede ? "impede" : ""}>
+                <div className="revisao-regra-cabecalho">
+                  <strong>{regra.nome}</strong>
+                  {regra.impede && <span className="revisao-regra-selo">Impede a contratação</span>}
+                  <button type="button" className="btn btn-pequeno" onClick={() => onIrParaAba(regra.aba)}>
+                    Ir para {rotulosAbas[regra.aba]}
+                  </button>
+                </div>
+                <span className="revisao-regra-motivo">
+                  {regra.condicao}
+                  {regra.encontrado ? ` — informado: ${regra.encontrado}` : ""}
+                </span>
+                {regra.textoParecer && (
+                  <span>
+                    <em>No Parecer:</em> {regra.textoParecer}
+                  </span>
+                )}
+                {regra.textoDevolutiva && (
+                  <span>
+                    <em>Na Devolutiva:</em> {regra.textoDevolutiva}
+                  </span>
+                )}
               </li>
             ))}
           </ul>

@@ -6,7 +6,7 @@ import {
   tipoSemValor,
   tipoTemAnaliseMatricula,
 } from "./garantiaModel";
-import { descreverAnaliseMatricula, descreverImovelGarantia } from "./analiseMatricula";
+import { descreverMatriculaParecer } from "./analiseMatricula";
 
 function formatarMoeda(valor) {
   const numero = Number(valor);
@@ -17,7 +17,9 @@ function formatarMoeda(valor) {
 // Recompoe o texto corrido do parecer a partir dos campos preenchidos — equivalente ao que
 // a aba PARECER do Excel monta com CONCAT/IF encadeados, mas escrito do zero como uma unica
 // funcao de composicao (sem as referencias quebradas do arquivo original).
-export default function gerarParecerTexto(operacao, capacidade) {
+// `regrasTexto`: mensagens das regras do parecer que foram acionadas (ja sem repeticao); ver
+// utils/regrasModel.js. Aparecem juntas, no fim, sob "Alçadas e condicionantes".
+export default function gerarParecerTexto(operacao, capacidade, regrasTexto = []) {
   const { proponente, proposta } = operacao;
   const linhas = [];
 
@@ -96,21 +98,24 @@ export default function gerarParecerTexto(operacao, capacidade) {
       const indice = indiceCoberturaGarantia(g, proposta.valorOperacao);
       const coberturaTexto = indice === null ? "" : ` (cobertura de ${(indice * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%)`;
       const nomes = (g.garantidores || []).map((gd) => gd.nome).filter(Boolean).join(", ");
+      const garantidoresTexto = nomes ? `, garantidor(es): ${nomes}` : "";
+      if (tipoTemAnaliseMatricula(g.tipo)) {
+        // imovel (hipoteca / alienacao): tipo, avaliacao, matricula e cobertura; os graus em aberto
+        // vem numa linha abaixo, so quando existem (o que esta zerado nao aparece)
+        const matricula = descreverMatriculaParecer(g, proposta.valorOperacao);
+        const avaliacao = formatarMoeda(g.valor) ? `avaliação de ${formatarMoeda(g.valor)}` : "avaliação não informada";
+        const matriculaTexto = matricula.matricula ? `, matrícula ${matricula.matricula}` : "";
+        linhas.push(
+          `  - ${rotuloTipoGarantia(g.tipo)}: ${avaliacao}${matriculaTexto}${coberturaTexto}${garantidoresTexto}.`
+        );
+        if (matricula.graus) linhas.push(`    ${matricula.graus}`);
+        return;
+      }
       // o aval nao tem valor proprio: cobre a operacao toda
       const valorTexto = tipoSemValor(g.tipo)
         ? "cobre a totalidade da operação"
         : formatarMoeda(g.valor) || "valor não informado";
-      linhas.push(
-        `  - ${rotuloTipoGarantia(g.tipo)}: ${valorTexto}${coberturaTexto}${nomes ? `, garantidor(es): ${nomes}` : ""}.`
-      );
-      // analise dos graus ja registrados na matricula (hipoteca / alienacao de imovel)
-      const imovel = tipoTemAnaliseMatricula(g.tipo) ? descreverImovelGarantia(g) : null;
-      if (imovel) linhas.push(`    ${imovel}`);
-      const analise = tipoTemAnaliseMatricula(g.tipo) ? descreverAnaliseMatricula(g, proposta.valorOperacao) : null;
-      if (analise) {
-        linhas.push(`    ${analise.resumo}`);
-        analise.graus.forEach((grau) => linhas.push(`      - ${grau}`));
-      }
+      linhas.push(`  - ${rotuloTipoGarantia(g.tipo)}: ${valorTexto}${coberturaTexto}${garantidoresTexto}.`);
     });
     const indiceTotal = indiceCoberturaTotal(garantias, proposta.valorOperacao);
     if (indiceTotal !== null) {
@@ -118,6 +123,12 @@ export default function gerarParecerTexto(operacao, capacidade) {
         `  Cobertura total das garantias: ${(indiceTotal * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%.`
       );
     }
+  }
+
+  if (regrasTexto.length > 0) {
+    linhas.push("");
+    linhas.push("Alçadas e condicionantes:");
+    regrasTexto.forEach((texto) => linhas.push(`  - ${texto}`));
   }
 
   linhas.push("");

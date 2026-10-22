@@ -19,6 +19,8 @@ export default function TextoGeradoPainel({
   onExportarPdf,
   rotuloPdf = "Exportar PDF",
   copiado,
+  regrasFaltando = 0,
+  onInserirRegras,
 }) {
   const { confirmar } = useUi();
   const trechos = contarTrechosAPreencher(texto);
@@ -61,6 +63,14 @@ export default function TextoGeradoPainel({
           </span>
         ) : (
           <span className="texto-gerado-selo automatico">Atualiza sozinho conforme você preenche a operação</span>
+        )}
+        {regrasFaltando > 0 && onInserirRegras && (
+          <span className="texto-gerado-selo aviso">
+            {regrasFaltando} regra{regrasFaltando > 1 ? "s acionadas não estão" : " acionada não está"} neste texto
+            <button type="button" className="texto-gerado-inserir" onClick={onInserirRegras}>
+              inserir no fim
+            </button>
+          </span>
         )}
         {trechos > 0 && (
           <span className="texto-gerado-selo aviso">

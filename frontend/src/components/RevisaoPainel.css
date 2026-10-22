@@ -26,6 +26,11 @@
   font-size: var(--fs-md);
 }
 
+.revisao-banner.impedimento {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
 .revisao-banner.atencao {
   border-left-color: var(--color-pendente);
   background: var(--status-pendente-soft);
@@ -175,4 +180,57 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+}
+
+/* --- regras do parecer acionadas ------------------------------------------------------------- */
+
+.revisao-regras {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.revisao-regras li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px var(--space-3);
+  border-left: 4px solid var(--color-ok);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+}
+
+.revisao-regras li.impede {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.revisao-regra-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.revisao-regra-cabecalho .btn {
+  margin-left: auto;
+}
+
+.revisao-regra-selo {
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--danger);
+  color: var(--surface);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  line-height: 18px;
+}
+
+.revisao-regra-motivo {
+  color: var(--color-ink-700);
 }

@@ -12,6 +12,7 @@ import {
   LINKS_UTEIS as LINKS_UTEIS_FALLBACK,
   FNO_REGRAS as FNO_REGRAS_FALLBACK,
 } from "../config/referenciaFallback";
+import { REGRAS_PADRAO } from "./regrasPadrao";
 
 // O backend ja atribui um `id` estavel a cada grupo/item (veja backend/storage/checklist_store.py) —
 // usamos esse id como chave no estado da operacao, para sobreviver a renomeacoes feitas no
@@ -46,6 +47,8 @@ function processarChecklist(checklist) {
     // "linhas" aqui e a categoria de checklist (Custeio/Investimento/...) por programa — nao
     // confundir com "linhasCredito" (tabela de codigos BNDES) exposta em outro campo.
     linhas: checklist.linhas || {},
+    // regras do parecer (Administracao > Regras do parecer)
+    regras: Array.isArray(checklist.regras) ? checklist.regras : [],
   };
 }
 
@@ -58,6 +61,7 @@ const FALLBACK = {
     garantias: CHECKLIST_GARANTIAS_FALLBACK,
     area_beneficiada: CHECKLIST_AREA_BENEFICIADA_FALLBACK,
     linhas: LINHAS_CHECKLIST_FALLBACK,
+    regras: REGRAS_PADRAO,
   }),
   linksUteis: LINKS_UTEIS_FALLBACK,
   fnoRegras: FNO_REGRAS_FALLBACK,

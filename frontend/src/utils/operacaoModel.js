@@ -42,6 +42,10 @@ export function criarOperacaoVazia() {
       score: "",
       rendaAnual: "",
       patrimonioAvaliado: "",
+      // dados de risco que as "regras do parecer" (Administracao) podem usar
+      perdaEsperada: "",
+      estagio3: "", // "SIM" | "NAO" | ""
+      parteRelacionada: "", // "SIM" | "NAO" | ""
       checklist: {},
     },
     proposta: {
@@ -96,6 +100,9 @@ export function operacaoEstaVazia(operacao) {
     proponente.score,
     proponente.rendaAnual,
     proponente.patrimonioAvaliado,
+    proponente.perdaEsperada,
+    proponente.estagio3,
+    proponente.parteRelacionada,
     proposta.linhaCreditoDescricao,
     proposta.finalidade,
     proposta.valorOperacao,

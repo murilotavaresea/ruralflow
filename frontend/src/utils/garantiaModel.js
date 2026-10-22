@@ -1,3 +1,5 @@
+import { resumirMatricula } from "./analiseMatricula";
+
 export const TIPOS_GARANTIA = [
   // analiseMatricula: o imovel tem matricula, cujos graus ja registrados precisam ser avaliados
   // (aba "HIPOTECA - ALIENACAO IMOVEL" da planilha-modelo).
@@ -29,11 +31,32 @@ export function tipoSemValor(tipo) {
 }
 
 // Cobertura da operacao por uma garantia (1 = 100%); null quando nao da pra calcular.
+// Hipoteca / alienacao de imovel: o que ja esta em aberto na matricula entra no risco, ou seja,
+// cobertura = avaliacao / (valor da operacao + valor tomado), como na planilha-modelo.
 export function indiceCoberturaGarantia(garantia, valorOperacao) {
   if (tipoSemValor(garantia.tipo)) return 1;
   const operacao = Number(valorOperacao) || 0;
   if (!operacao) return null;
-  return (Number(garantia.valor) || 0) / operacao;
+  const tomado = tipoTemAnaliseMatricula(garantia.tipo) ? resumirMatricula(garantia, operacao).valorTomado : 0;
+  return (Number(garantia.valor) || 0) / (operacao + tomado);
+}
+
+// Alguma garantia de imovel tem grau em aberto na matricula (a cobertura ja o considera).
+export function temGrausEmAberto(garantias) {
+  return (garantias || []).some((g) => {
+    if (!tipoTemAnaliseMatricula(g.tipo)) return false;
+    const resumo = resumirMatricula(g, 0);
+    return resumo.grausDeHipotecaAbertos + resumo.alienacoesAbertas > 0;
+  });
+}
+
+// Soma das coberturas das garantias reais (sem o aval); null sem o valor da operacao.
+export function indiceCoberturaReais(garantias, valorOperacao) {
+  const operacao = Number(valorOperacao) || 0;
+  if (!operacao) return null;
+  return (garantias || [])
+    .filter((g) => !tipoSemValor(g.tipo))
+    .reduce((soma, g) => soma + (indiceCoberturaGarantia(g, operacao) || 0), 0);
 }
 
 // Soma dos valores das garantias. O aval conta como o valor da operacao (cobre tudo) e uma
@@ -47,12 +70,14 @@ export function somaValorGarantias(garantias, valorOperacao) {
   return reais + (temAval ? Number(valorOperacao) || 0 : 0);
 }
 
-// Cobertura total (1 = 100%). Sem valor de operacao informado ainda, so se sabe que um aval
-// ja cobre 100%.
+// Cobertura total (1 = 100%): soma da cobertura de cada garantia (ja considerando os graus em
+// aberto dos imoveis); o aval conta 100%, uma unica vez. Sem valor de operacao informado ainda,
+// so se sabe que um aval ja cobre 100%.
 export function indiceCoberturaTotal(garantias, valorOperacao) {
   const operacao = Number(valorOperacao) || 0;
-  if (operacao > 0) return somaValorGarantias(garantias, operacao) / operacao;
-  return (garantias || []).some((g) => tipoSemValor(g.tipo)) ? 1 : null;
+  const temAval = (garantias || []).some((g) => tipoSemValor(g.tipo));
+  if (operacao > 0) return indiceCoberturaReais(garantias, operacao) + (temAval ? 1 : 0);
+  return temAval ? 1 : null;
 }
 
 function novoId(prefixo) {

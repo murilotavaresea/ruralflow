@@ -52,7 +52,7 @@ describe("modelo e normalizacao", () => {
 });
 
 describe("parecer", () => {
-  test("a caracterizacao do imovel vem antes da analise da matricula, abaixo da garantia", () => {
+  test("o parecer nao traz a caracterizacao do imovel (nome, municipio, area, CCIR, NIRF, CAR)", () => {
     const op = criarOperacaoVazia();
     op.proposta.valorOperacao = "200000";
     op.garantias = [
@@ -66,10 +66,8 @@ describe("parecer", () => {
       },
     ];
     const texto = gerarParecerTexto(op, { beneficiario: { rendaLiquida: 0, indice: null } });
-    const linhaImovel = texto.indexOf('\n    Imóvel "Fazenda Esperança": município de Mineiros, área total de 300 ha.');
-    const linhaMatricula = texto.indexOf("\n    Matrícula 999:");
-    expect(linhaImovel).toBeGreaterThan(-1);
-    expect(linhaMatricula).toBeGreaterThan(linhaImovel);
+    expect(texto).not.toMatch(/Fazenda Esperança|Mineiros|300 ha|CCIR|NIRF|CAR /);
+    expect(texto).toContain("matrícula 999");
   });
 
   test("aval nunca ganha linha de imovel", () => {

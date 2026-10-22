@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AdminChecklist from "../components/AdminChecklist";
 import AdminLinhas from "../components/AdminLinhas";
+import AdminRegras from "../components/AdminRegras";
 import { PROGRAMAS } from "../utils/operacaoModel";
 import { TIPOS_GARANTIA } from "../utils/garantiaModel";
 import "./Administracao.css";
@@ -10,6 +11,7 @@ const PAINEIS = [
   { chave: "documentos", rotulo: "Demais Documentos" },
   { chave: "area_beneficiada", rotulo: "Área Beneficiada" },
   { chave: "garantias", rotulo: "Garantias" },
+  { chave: "regras", rotulo: "Regras do parecer" },
 ];
 
 const ESCOPOS_GARANTIA = [
@@ -70,7 +72,10 @@ export default function Administracao() {
     <main className="administracao" id="conteudo-principal" tabIndex={-1}>
       <header className="administracao-header">
         <h1>Administração de checklist</h1>
-        <p>Crie, edite, reordene e exclua os itens que aparecem na operação — sem mexer em código.</p>
+        <p>
+          Crie, edite, reordene e exclua os itens que aparecem na operação e as regras que levam mensagens ao parecer —
+          sem mexer em código.
+        </p>
       </header>
 
       <nav className="administracao-selecao" aria-label="Painéis de checklist">
@@ -140,12 +145,16 @@ export default function Administracao() {
         </div>
       )}
 
-      <AdminChecklist
-        key={`${caminhoApi}-${linhasVersao}`}
-        caminhoApi={caminhoApi}
-        caminhoLeitura={caminhoLeitura}
-        titulo={tituloPainel}
-      />
+      {painel === "regras" ? (
+        <AdminRegras />
+      ) : (
+        <AdminChecklist
+          key={`${caminhoApi}-${linhasVersao}`}
+          caminhoApi={caminhoApi}
+          caminhoLeitura={caminhoLeitura}
+          titulo={tituloPainel}
+        />
+      )}
     </main>
   );
 }

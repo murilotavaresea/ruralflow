@@ -6,6 +6,7 @@ import {
   indiceCoberturaTotal,
   rotuloTipoGarantia,
   somaValorGarantias,
+  temGrausEmAberto,
   tipoSemValor,
 } from "../utils/garantiaModel";
 import useAbaAtiva from "../utils/useAbaAtiva";
@@ -60,6 +61,7 @@ export default function GarantiasPainel({ garantias, checklistGarantiasDef, valo
           </span>
           <span>
             Cobertura total: <strong>{formatarPercentual(indiceTotal)}</strong>
+            {temGrausEmAberto(garantias) && <small> (considera os graus em aberto)</small>}
           </span>
         </div>
 

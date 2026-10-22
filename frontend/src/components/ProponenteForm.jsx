@@ -20,7 +20,7 @@ export default function ProponenteForm({ proponente, checklistDef, onMudarCampo,
         </p>
 
         {/* um grid so, como no layout original: 9 campos nao precisam de tres secoes empilhadas */}
-        <div className="grade-campos colunas-3">
+        <div className="grade-campos colunas-4">
           <label className="campo obrigatorio">
             <span>Nome / Razão social</span>
             <input
@@ -91,6 +91,32 @@ export default function ProponenteForm({ proponente, checklistDef, onMudarCampo,
           <label className="campo">
             <span>Score</span>
             <input type="text" value={proponente.score} onChange={(e) => onMudarCampo("score", e.target.value)} />
+          </label>
+          <label className="campo">
+            <span>Perda esperada (PE)</span>
+            <CampoNumerico
+              sufixo="%"
+              maximo={100}
+              valor={proponente.perdaEsperada}
+              onChange={(valor) => onMudarCampo("perdaEsperada", valor)}
+              placeholder="0,00"
+            />
+          </label>
+          <label className="campo">
+            <span>Operação em Estágio 3</span>
+            <select value={proponente.estagio3} onChange={(e) => onMudarCampo("estagio3", e.target.value)}>
+              <option value="">Selecione</option>
+              <option value="SIM">Sim</option>
+              <option value="NAO">Não</option>
+            </select>
+          </label>
+          <label className="campo">
+            <span>Parte relacionada</span>
+            <select value={proponente.parteRelacionada} onChange={(e) => onMudarCampo("parteRelacionada", e.target.value)}>
+              <option value="">Selecione</option>
+              <option value="SIM">Sim</option>
+              <option value="NAO">Não</option>
+            </select>
           </label>
         </div>
       </div>

@@ -2,7 +2,7 @@
   "proponente": [
     {
       "id": "grp_e3b1511ef1",
-      "nome": "Compliance geral",
+      "nome": "Documentos Proponente",
       "itens": [
         {
           "id": "itm_7cf68623b7",
@@ -1781,5 +1781,57 @@
         ]
       }
     ]
-  }
+  },
+  "regras": [
+    {
+      "id": "reg_3727d62242",
+      "nome": "Risco R7 ou acima",
+      "ativa": true,
+      "campo": "proponente_risco",
+      "operador": "maior_igual",
+      "valor": "7",
+      "fontes": "todas",
+      "impedeContratacao": false,
+      "textoParecer": "Cooperado com risco {risco}: a operação deve ser deliberada pelas alçadas competentes.",
+      "textoDevolutiva": ""
+    },
+    {
+      "id": "reg_ba7f8c6023",
+      "nome": "QRSA Alto",
+      "ativa": true,
+      "campo": "proponente_qrsa",
+      "operador": "igual",
+      "valor": "Alto",
+      "fontes": "todas",
+      "impedeContratacao": false,
+      "textoParecer": "QRSA Alto: submeter ao Nível 4.",
+      "textoDevolutiva": ""
+    },
+    {
+      "nome": "Seguro Prestamista",
+      "ativa": true,
+      "campo": "proposta_seguro",
+      "operador": "igual",
+      "valor": "SIM",
+      "fontes": "todas",
+      "impedeContratacao": false,
+      "textoParecer": "Seguro prestamista: Sim.",
+      "textoDevolutiva": "",
+      "id": "reg_b8a15a07a2"
+    },
+    {
+      "nome": "Renda Limite FNO",
+      "ativa": true,
+      "campo": "proponente_renda_anual",
+      "operador": "maior_igual",
+      "valor": "16000000",
+      "fontes": [
+        "fno"
+      ],
+      "impedeContratacao": true,
+      "textoParecer": "",
+      "textoDevolutiva": "- PROPONENTE POSSUI RENDA ANUAL SUPERIOR A R$16.000.000,00, PORTE NÃO ATENDIDO PELO SICOOB.",
+      "id": "reg_febe8b0f9d"
+    }
+  ]
 }

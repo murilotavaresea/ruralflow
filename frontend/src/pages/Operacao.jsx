@@ -35,6 +35,7 @@ import {
 } from "../utils/operacaoStorage";
 import { calcularCapacidade, valorParcela } from "../utils/capacidadePagamento";
 import { coletarRevisao } from "../utils/revisao";
+import { avaliarRegras, textosUnicos } from "../utils/regrasModel";
 import gerarParecerTexto from "../utils/gerarParecerTexto";
 import gerarDevolutivaTexto from "../utils/gerarDevolutivaTexto";
 import { gerarPdfOperacao, gerarPdfDevolutiva } from "../utils/gerarPdf";
@@ -463,7 +464,42 @@ export default function Operacao({ onIrParaAdministracao }) {
     [operacao, referencia.checklist]
   );
 
-  const revisao = useMemo(() => coletarRevisao(operacao, referencia.checklist), [operacao, referencia.checklist]);
+  // Regras do parecer (Administracao): cada uma avalia um dado da operacao e pode levar uma mensagem
+  // ao Parecer, outra a Devolutiva e/ou marcar que a contratacao esta impedida.
+  const resultadosRegras = useMemo(
+    () => avaliarRegras(operacao, referencia.checklist.regras, { progresso }),
+    [operacao, referencia.checklist.regras, progresso]
+  );
+  const textosRegrasParecer = useMemo(
+    () => textosUnicos(resultadosRegras.filter((r) => r.estado === "acionada").map((r) => r.textoParecer)),
+    [resultadosRegras]
+  );
+  const textosRegrasDevolutiva = useMemo(
+    () => textosUnicos(resultadosRegras.filter((r) => r.estado === "acionada").map((r) => r.textoDevolutiva)),
+    [resultadosRegras]
+  );
+  const chaveRegrasParecer = textosRegrasParecer.join("\u0001");
+  const chaveRegrasDevolutiva = textosRegrasDevolutiva.join("\u0001");
+
+  const revisao = useMemo(
+    () => coletarRevisao(operacao, referencia.checklist, resultadosRegras),
+    [operacao, referencia.checklist, resultadosRegras]
+  );
+
+  // Parecer editado a mao nao acompanha mais os dados; avisa e deixa inserir o que ficou de fora.
+  const regrasFaltandoNoParecer = operacao.parecerEditadoManualmente
+    ? textosRegrasParecer.filter((texto) => !String(operacao.parecerTexto || "").includes(texto))
+    : [];
+
+  const inserirRegrasNoParecer = () => {
+    setOperacao((op) => {
+      const faltando = textosRegrasParecer.filter((texto) => !String(op.parecerTexto || "").includes(texto));
+      if (faltando.length === 0) return op;
+      const jaTemTitulo = String(op.parecerTexto || "").includes("Alçadas e condicionantes:");
+      const bloco = [...(jaTemTitulo ? [] : ["", "Alçadas e condicionantes:"]), ...faltando.map((texto) => `  - ${texto}`)];
+      return { ...op, parecerTexto: `${String(op.parecerTexto || "").replace(/\s+$/, "")}\n${bloco.join("\n")}\n` };
+    });
+  };
 
   const indicadoresAbas = useMemo(() => {
     const doChecklist = (contagem, aba) => ({
@@ -487,13 +523,13 @@ export default function Operacao({ onIrParaAdministracao }) {
   // --- parecer e devolutiva ------------------------------------------------------------
 
   const regerarParecer = () => {
-    const texto = gerarParecerTexto(operacao, { beneficiario: capacidadeBeneficiario });
+    const texto = gerarParecerTexto(operacao, { beneficiario: capacidadeBeneficiario }, textosRegrasParecer);
     setOperacao((op) => ({ ...op, parecerTexto: texto, parecerEditadoManualmente: false }));
   };
 
   useEffect(() => {
     if (!operacao.parecerEditadoManualmente) {
-      const texto = gerarParecerTexto(operacao, { beneficiario: capacidadeBeneficiario });
+      const texto = gerarParecerTexto(operacao, { beneficiario: capacidadeBeneficiario }, textosRegrasParecer);
       setOperacao((op) => (op.parecerTexto === texto ? op : { ...op, parecerTexto: texto }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -504,6 +540,7 @@ export default function Operacao({ onIrParaAdministracao }) {
     operacao.areaBeneficiada,
     capacidadeBeneficiario.rendaLiquida,
     capacidadeBeneficiario.indice,
+    chaveRegrasParecer,
   ]);
 
   const copiarTexto = async (texto, definirCopiado, descricao) => {
@@ -521,17 +558,17 @@ export default function Operacao({ onIrParaAdministracao }) {
   };
 
   const exportarPdf = () => {
-    gerarPdfOperacao(operacao, referencia.checklist);
+    gerarPdfOperacao(operacao, referencia.checklist, resultadosRegras);
   };
 
   const regerarDevolutiva = () => {
-    const texto = gerarDevolutivaTexto(operacao, referencia.checklist);
+    const texto = gerarDevolutivaTexto(operacao, referencia.checklist, textosRegrasDevolutiva);
     setOperacao((op) => ({ ...op, devolutivaTextoFinal: texto, devolutivaEditadaManualmente: false }));
   };
 
   useEffect(() => {
     if (!operacao.devolutivaEditadaManualmente) {
-      const texto = gerarDevolutivaTexto(operacao, referencia.checklist);
+      const texto = gerarDevolutivaTexto(operacao, referencia.checklist, textosRegrasDevolutiva);
       setOperacao((op) => (op.devolutivaTextoFinal === texto ? op : { ...op, devolutivaTextoFinal: texto }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -543,6 +580,7 @@ export default function Operacao({ onIrParaAdministracao }) {
     operacao.proposta.programa,
     operacao.proposta.linhaChecklist,
     referencia.checklist,
+    chaveRegrasDevolutiva,
   ]);
 
   const exportarPdfDevolutiva = () => {
@@ -734,6 +772,7 @@ export default function Operacao({ onIrParaAdministracao }) {
         progresso={progresso}
         salvamento={salvamento}
         dadosLocais={referencia.origem === "local"}
+        impedimentos={revisao.regras.impedimentos.length}
         onIrParaAba={setAbaAtiva}
       />
 
@@ -841,6 +880,8 @@ export default function Operacao({ onIrParaAdministracao }) {
               onExportarPdf={exportarPdf}
               rotuloPdf="Exportar relatório (PDF)"
               copiado={copiado}
+              regrasFaltando={regrasFaltandoNoParecer.length}
+              onInserirRegras={inserirRegrasNoParecer}
             />
           )}
 

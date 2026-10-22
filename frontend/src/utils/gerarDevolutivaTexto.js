@@ -24,7 +24,8 @@ function linhasPendentes(grupos, estado) {
 // fonte/linha selecionada, Área Beneficiada e Garantias), agrupados por secao — igual ao
 // papel da aba DEVOLUTIVAS do Excel original, so que montado automaticamente a partir do que
 // ja foi marcado no checklist, em vez de copiado a mao.
-export default function gerarDevolutivaTexto(operacao, checklistDefs) {
+// `regrasTexto`: textos de devolutiva das regras acionadas (ver utils/regrasModel.js).
+export default function gerarDevolutivaTexto(operacao, checklistDefs, regrasTexto = []) {
   const blocos = [];
 
   const secoesFixas = [
@@ -98,6 +99,10 @@ export default function gerarDevolutivaTexto(operacao, checklistDefs) {
       }
     });
   });
+
+  if (regrasTexto.length > 0) {
+    blocos.push(`Condicionantes\n${regrasTexto.map((texto) => `  - ${texto}`).join("\n")}`);
+  }
 
   if (blocos.length === 0) {
     return "Nenhuma pendência marcada para devolutiva no momento.";
